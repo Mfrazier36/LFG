@@ -1,4 +1,4 @@
-export const playerData = props => (
+const Player = props => (
 	{
 		id: props.id.id,
 		name: props.name,
@@ -81,3 +81,5 @@ export const playerData = props => (
 		aerial: props.stats.perPosessionStats.aerial,
 	}
 )
+
+export default Player;

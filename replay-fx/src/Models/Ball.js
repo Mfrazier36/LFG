@@ -1,4 +1,4 @@
-export const Ball = props => ({
+const Ball = props => ({
 		timeOnGround: props.positionalTendencies.timeOnGround,
 		timeLowInAir: props.positionalTendencies.timeLowInAir,
 		timeHighInAir: props.positionalTendencies.timeHighInAir,
@@ -14,3 +14,5 @@ export const Ball = props => ({
 		timeOnWall: props.positionalTendencies.timeOnWall,
 	  averageSpeed: props.averages.averageSpeed,
 })
+
+export default Ball;

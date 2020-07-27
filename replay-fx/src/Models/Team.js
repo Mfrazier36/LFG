@@ -1,4 +1,4 @@
-export const teamData = props => (
+const Team = props => (
 	{
 		playerIds: props.playerIds.map(e => e.id),
 		score: props.score,
@@ -35,3 +35,5 @@ export const teamData = props => (
 		timeBoondocks: props.stats.timeBoondocks,
 	}
 )
+
+export default Team;
