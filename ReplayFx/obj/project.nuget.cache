@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "7vcZzXrYH+l2sOitFuKlZQ0o1OflGsoLQ5oWm8Ffh6AkHDh3OUr2WIDHQHF6FIzL6idZj6cle3aaAPNvv/sDVw==",
+  "success": true,
+  "projectFilePath": "C:\\Workspace\\Projects\\LFG\\RocketCarReplay\\ReplayFx\\ReplayFx.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\mfraz\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
