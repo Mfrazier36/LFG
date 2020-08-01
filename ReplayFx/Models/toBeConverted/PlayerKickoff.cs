@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ReplayFx.Models.Data
+namespace ReplayFx.Models
 {
     class PlayerKickoff
     {

@@ -14,7 +14,7 @@ namespace ReplayFx.Models.Data
         public string titleId { get; set; }
         public BasicStats basicStats { get; set; }
         public PlayerStats playerStats { get; set; }
-      
+
         public Player(JObject rawData)
         {
             Console.WriteLine("Model: [Player]");
@@ -22,10 +22,11 @@ namespace ReplayFx.Models.Data
             name = rawData["name"].ToString();
             titleId = rawData["titleId"].ToString();
             basicStats = new BasicStats(rawData);
+
             JObject statsData = CreateObject(rawData["stats"]);
-            PlayerStats stats = new PlayerStats(statsData);
-            playerStats = stats;
+            playerStats = new PlayerStats(statsData);
         }
+
         public class BasicStats
         {
             public string score { get; set; }
@@ -36,6 +37,7 @@ namespace ReplayFx.Models.Data
             public string isOrange { get; set; }
             public string timeInGame { get; set; }
             public string carId { get; set; }
+
             public BasicStats(JObject rawData)
             {
                 Console.WriteLine("Model: [Player.BasicStats]");

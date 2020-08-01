@@ -11,31 +11,43 @@ namespace ReplayFx.Models.Data
 {
     public class PlayerStats : JObject
     {
+        public Boost boostStats { get; set; }
+        public Distance distanceStats { get; set; }
+        public Posession posessionStats { get; set; }
+        public Position positionStats { get; set; }
+        public RelativePosition relativePositionStats { get; set; }
+        public Averages averagesStats { get; set; }
+        public HitCount hitCountStats { get; set; }
+        public Speed speedStats { get; set; }
+        public PerPosession perPosessionStats { get; set; }
+        public BallCarry ballCarryStats { get; set; }
+        public Kickoff kickoffStats { get; set; }
+
         public PlayerStats(JObject rawData)
         {
+            JObject boostData = CreateObject(rawData["boost"]);
+            JObject distanceData = CreateObject(rawData["distance"]);
+            JObject posessionData = CreateObject(rawData["Posession"]);
+            JObject positionData = CreateObject(rawData["positionalTendencies"]);
+            JObject averagesData = CreateObject(rawData["averages"]);
+            JObject hitCountsData = CreateObject(rawData["hitCounts"]);
+            JObject speedData = CreateObject(rawData["speed"]);
+            JObject relativePositioningData = CreateObject(rawData["relativePositioning"]);
+            JObject perPosessionData = CreateObject(rawData["perPossessionStats"]);
+            JObject ballCarriesData = CreateObject(rawData["ballCarries"]);
+            JObject kickoffData = CreateObject(rawData["kickoffStats"]);
 
-        }
-        public class BasicStats
-        {
-            public string score { get; set; }
-            public string goals { get; set; }
-            public string assists { get; set; }
-            public string shots { get; set; }
-            public string saves { get; set; }
-            public string isOrange { get; set; }
-            public string timeInGame { get; set; }
-            public string carId { get; set; }
-            public BasicStats(JObject rawData)
-            {
-                Console.WriteLine("Model: [Player.BasicStats]");
-                score = rawData["score"].ToString();
-                goals = rawData["goals"].ToString();
-                assists = rawData["assists"].ToString();
-                shots = rawData["shots"].ToString();
-                isOrange = rawData["isOrange"].ToString();
-                timeInGame = rawData["timeInGame"].ToString();
-                carId = rawData["loadout.carId"].ToString();
-            }
+            boostStats = new Boost(boostData);
+            distanceStats = new Distance(distanceData);
+            posessionStats = new Posession(posessionData);
+            positionStats = new Position(positionData);
+            relativePositionStats = new RelativePosition(relativePositioningData);
+            averagesStats = new Averages(averagesData);
+            hitCountStats = new HitCount(hitCountsData);
+            speedStats = new Speed(speedData);
+            perPosessionStats = new PerPosession(perPosessionData);
+            ballCarryStats = new BallCarry(ballCarriesData);
+            kickoffStats = new Kickoff(kickoffData);
         }
         public class Boost
         {
@@ -50,9 +62,10 @@ namespace ReplayFx.Models.Data
             public string averageBoostLevel { get; set; }
             public string totalWastedBigBoost { get; set; }
             public string totalWastedSmallBoost { get; set; }
+
             public Boost (JObject rawData)
             {
-                Console.WriteLine("Model: [PlayerBoost]");
+                Console.WriteLine("Model: [Playe.Boost]");
                 boostUsage = rawData["boostUsage"].ToString();
                 numSmallBoost = rawData["numSmallBoost"].ToString();
                 numLargeBoost = rawData["numLargeBoost"].ToString();
@@ -74,9 +87,10 @@ namespace ReplayFx.Models.Data
             public string timeClosestToBall { get; set; }
             public string timeFurthestFromBall { get; set; }
             public string timeCloseToBall { get; set; }
+
             public Distance (JObject rawData)
             {
-                Console.WriteLine("Model: [PlayerDistance]");
+                Console.WriteLine("Model: [Player.Distance]");
                 distanceBallHitBackward = rawData["ballHitBackward"].ToString();
                 distanceBallHitForward = rawData["ballHitForward"].ToString();
                 timeClosestToBall = rawData["timeClosestToBall"].ToString();
@@ -92,9 +106,10 @@ namespace ReplayFx.Models.Data
             public string turnoversOnMyHalf { get; set; }
             public string turnoversOnTheirHalf { get; set; }
             public string wonTurnovers { get; set; }
+
             public Posession(JObject rawData)
             {
-                Console.WriteLine("Model: [PlayerPosession]");
+                Console.WriteLine("Model: [Player.Posession]");
                 totalPossessionTime = rawData["possessionTime"].ToString();
                 turnovers = rawData["turnovers"].ToString();
                 turnoversOnMyHalf = rawData["turnoversOnMyHalf"].ToString();
@@ -118,9 +133,10 @@ namespace ReplayFx.Models.Data
             public string timeNearWall { get; set; }
             public string timeInCorner { get; set; }
             public string timeOnWall { get; set; }
+
             public Position (JObject rawData)
             {
-                Console.WriteLine("Model: [PlayerPosition]");
+                Console.WriteLine("Model: [Player.Position]");
                 timeOnGround = rawData["timeOnGround"].ToString();
                 timeLowInAir = rawData["timeLowInAir"].ToString();
                 timeHighInAir = rawData["timeHighInAir"].ToString();
@@ -144,9 +160,10 @@ namespace ReplayFx.Models.Data
             public string timeMostForwardPlayer { get; set; }
             public string timeMostBackPlayer { get; set; }
             public string timeBetweenPlayers { get; set; }
+
             public RelativePosition(JObject rawData)
             {
-                Console.WriteLine("Model: [PlayerRelativePosition]");
+                Console.WriteLine("Model: [Player.RelativePosition]");
                 timeInFrontOfCenterOfMass = rawData["timeInFrontOfCenterOfMass"].ToString();
                 timeBehindCenterOfMass = rawData["timeBehindCenterOfMass"].ToString();
                 timeMostForwardPlayer = rawData["timeMostForwardPlayer"].ToString();
@@ -160,9 +177,10 @@ namespace ReplayFx.Models.Data
             public string averageSpeed { get; set; }
             public string averageHitDistance { get; set; }
             public string averageDistanceFromCenter { get; set; }
+
             public Averages(JObject rawData)
             {
-                Console.WriteLine("Model: [PlayerAverages]");
+                Console.WriteLine("Model: [Player.Averages]");
                 averageSpeed = rawData["averageSpeed"].ToString();
                 averageHitDistance = rawData["averageHitDistance"].ToString();
                 averageDistanceFromCenter = rawData["averageDistanceFromCenter"].ToString();
@@ -178,9 +196,10 @@ namespace ReplayFx.Models.Data
             public string totalDribbleContinuations { get; set; }
             public string totalAerials { get; set; }
             public string totalClears { get; set; }
+
             public HitCount(JObject rawData)
             {
-                Console.WriteLine("Model: [PlayerHitCount]");
+                Console.WriteLine("Model: [Player.HitCount]");
                 totalHits = rawData["totalHits"].ToString();
                 totalPasses = rawData["totalPasses"].ToString();
                 totalSaves = rawData["totalSaves"].ToString();
@@ -196,9 +215,10 @@ namespace ReplayFx.Models.Data
             public string timeAtSlowSpeed { get; set; }
             public string timeAtSuperSonic { get; set; }
             public string timeAtBoostSpeed { get; set; }
+
             public Speed(JObject rawData)
             {
-                Console.WriteLine("Model: [PlayerSpeed]");
+                Console.WriteLine("Model: [Player.Speed]");
                 timeAtSlowSpeed = rawData["timeAtSlowSpeed"].ToString();
                 timeAtSuperSonic = rawData["timeAtSuperSonic"].ToString();
                 timeAtBoostSpeed = rawData["timeAtBoostSpeed"].ToString();
@@ -220,9 +240,10 @@ namespace ReplayFx.Models.Data
             public string ppAverageAssisted { get; set; }
             public string ppAverageSave { get; set; }
             public string ppAverageAerial { get; set; }
+
             public PerPosession (JObject rawData)
             {
-                Console.WriteLine("Model: [PlayerPerPosession]");
+                Console.WriteLine("Model: [Player.PerPosession]");
                 ppAverageDuration = rawData["averageDuration"].ToString();
                 ppAverageHits = rawData["averageHits"].ToString();
                 ppTotalCount = rawData["count"].ToString();
@@ -250,9 +271,10 @@ namespace ReplayFx.Models.Data
             public string totalCarryDistance { get; set; }
             public string averageCarrySpeed { get; set; }
             public string distanceAlongPath { get; set; }
+
             public BallCarry(JObject rawData)
             {
-                Console.WriteLine("Model: [PlayerBallCarry]");
+                Console.WriteLine("Model: [Player.BallCarry]");
                 totalCarries = rawData["totalCarries"].ToString();
                 longestCarry = rawData["longestCarry"].ToString();
                 furthestCarry = rawData["furthestCarry"].ToString();
@@ -272,15 +294,22 @@ namespace ReplayFx.Models.Data
             public string numTimeGoToBall { get; set; }
             public string numTimeFirstTouch { get; set; }
             public string averageBoostUsed { get; set; }
+
             public Kickoff(JObject rawData)
             {
-                Console.WriteLine("Model: [PlayerKickoff]");
+                Console.WriteLine("Model: [Player.Kickoff]");
                 totalKickoffs = rawData["totalKickoffs"].ToString();
                 numTimeCheat = rawData["numTimeCheat"].ToString();
                 numTimeGoToBall = rawData["numTimeGoToBall"].ToString();
                 numTimeFirstTouch = rawData["numTimeFirstTouch"].ToString();
                 averageBoostUsed = rawData["averageBoostUsed"].ToString();
             }
+        }
+
+        private JObject CreateObject(JToken data)
+        {
+            JObject dataObject = data.ToObject<JObject>();
+            return dataObject;
         }
     }
 }
