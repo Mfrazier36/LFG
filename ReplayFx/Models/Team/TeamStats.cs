@@ -15,6 +15,7 @@ namespace ReplayFx.Models.Team
 
         public TeamStats(JObject rawData)
         {
+            Console.WriteLine("Model: [TeamStats]");
             JObject posessionData = CreateObject(rawData["posession"]);
             JObject hitCountsData = CreateObject(rawData["hitCounts"]);
             JObject positionData = CreateObject(rawData["centerOfMass"]);
@@ -34,6 +35,7 @@ namespace ReplayFx.Models.Team
 
             public Posession(JObject rawData)
             {
+                Console.WriteLine("Model: [TeamStats.Posession]");
                 totalPosessionTime = rawData["posessionTime"].ToString();
                 turnovers = rawData["turnovers"].ToString();
                 turnoversOnMyHalf = rawData["turnoversOnMyHalf"].ToString();
@@ -54,6 +56,7 @@ namespace ReplayFx.Models.Team
 
             public HitCounts(JObject rawData)
             {
+                Console.WriteLine("Model: [TeamStats.HitCounts]");
                 totalHits = rawData["totalHits"].ToString();
                 totalPasses = rawData["totalPasses"].ToString();
                 totalSaves = rawData["totalSaves"].ToString();
@@ -84,6 +87,7 @@ namespace ReplayFx.Models.Team
 
             public Position(JObject rawData)
             {
+                Console.WriteLine("Model: [TeamStats.Position]");
                 timeOnGround = rawData["positionalTendencies.timeOnGround"].ToString();
                 timeLowInAir = rawData["positionalTendencies.timeLowInAir"].ToString();
                 timeHighInAir = rawData["positionalTendencies.timeHighInAir"].ToString();

@@ -19,15 +19,58 @@ namespace ReplayFx.Models.GameStats
 
         public GameStats(JObject rawData)
         {
-            JObject hitData = CreateObject(rawData["boost"]);
-            JObject bumpData = CreateObject(rawData["distance"]);
-            JObject ballStatData = CreateObject(rawData["Posession"]);
-            JObject kickoffFrameData = CreateObject(rawData["positionalTendencies"]);
-            JObject kickoffStatData = CreateObject(rawData["averages"]);
-            JObject ballCarryData = CreateObject(rawData["hitCounts"]);
+            Console.WriteLine("Model: [GameStats]");
+            JArray hitData = CreateArray(rawData["hits"]);
+            JArray bumpData = CreateArray(rawData["bumps"]);
+            JArray ballStatData = CreateArray(rawData["ballStats"]);
+            JArray kickoffFrameData = CreateArray(rawData["kickoffs"]);
+            JArray kickoffStatData = CreateArray(rawData["kickoffStats"]);
+            JArray ballCarryData = CreateArray(rawData["ballCarries"]);
 
-            // TODO: GET FRAME DATA
+            List<Hits> hitFrames = new List<Hits>();
+            List<Bumps> BumpFrames = new List<Bumps>();
+            List<BallStats> ballFrames = new List<BallStats>();
+            List<Kickoffs> kickoffFrames = new List<Kickoffs>();
+            List<KickoffStats> kickoffFrameStats = new List<KickoffStats>();
+            List<BallCarry> ballCarryFrames = new List<BallCarry>();
+
             neutralPossessionTime = rawData["neutralPossessionTime"].ToString();
+            foreach (var frame in hitData)
+            {
+                Hits hFrame = new Hits(CreateObject(frame));
+                hitFrames.Add(hFrame);
+            }
+            foreach (var frame in hitData)
+            {
+                Bumps bFrame = new Bumps(CreateObject(frame));
+                BumpFrames.Add(bFrame);
+            }
+            foreach (var frame in hitData)
+            {
+                BallStats bsFrame = new BallStats(CreateObject(frame));
+                ballFrames.Add(bsFrame);
+            }
+            foreach (var frame in hitData)
+            {
+                Kickoffs koFrame = new Kickoffs(CreateObject(frame));
+                kickoffFrames.Add(koFrame);
+            }
+            foreach (var frame in hitData)
+            {
+                KickoffStats kosFrame = new KickoffStats(CreateObject(frame));
+                kickoffFrameStats.Add(kosFrame);
+            }
+            foreach (var frame in hitData)
+            {
+                BallCarry bcFrame = new BallCarry(CreateObject(frame));
+                ballCarryFrames.Add(bcFrame);
+            }
+            hits = hitFrames.ToArray();
+            bumps = BumpFrames.ToArray();
+            ballStats = ballFrames.ToArray();
+            kickoffs = kickoffFrames.ToArray();
+            kickoffStats = kickoffFrameStats.ToArray();
+            ballCarries = ballCarryFrames.ToArray();
         }
 
         public class Hits
@@ -45,6 +88,7 @@ namespace ReplayFx.Models.GameStats
             public string isKickoff { get; set; }
             public Hits(JObject rawData)
             {
+                Console.WriteLine("Model: [GameStats.Hits]");
                 frameNumber = rawData["frameNumber"].ToString();
                 playerId = rawData["playerId"].ToString();
                 collisionDistance = rawData["collisionDistance"].ToString();
@@ -66,6 +110,7 @@ namespace ReplayFx.Models.GameStats
             public string isDemo { get; set; }
             public Bumps(JObject rawData)
             {
+                Console.WriteLine("Model: [GameStats.Bumps]");
                 frameNumber = rawData["frameNumber"].ToString();
                 attackerId = rawData["attackerId"].ToString();
                 victimId = rawData["victimId"].ToString();
@@ -89,6 +134,7 @@ namespace ReplayFx.Models.GameStats
             public string neutralPosessionTime { get; set; }
             public BallStats(JObject rawData)
             {
+                Console.WriteLine("Model: [GameStats.BallStats]");
                 timeOnGround = rawData["timeOnGround"].ToString();
                 timeLowInAir = rawData["timeLowInAir"].ToString();
                 timeHighInAir = rawData["timeHighInAir"].ToString();
@@ -110,6 +156,7 @@ namespace ReplayFx.Models.GameStats
             public string endFrameNumber { get; set; }
             public Kickoffs(JObject rawData)
             {
+                Console.WriteLine("Model: [GameStats.Kickoffs]");
                 startFrameNumber = rawData["startFrameNumber"].ToString();
                 endFrameNumber = rawData["endFrameNumber"].ToString();
             }
@@ -126,6 +173,7 @@ namespace ReplayFx.Models.GameStats
 
             public KickoffStats(JObject rawData)
             {
+                Console.WriteLine("Model: [GameStats.KickoffStats]");
                 startFrame = rawData["startFrame"].ToString();
                 touchFrame = rawData["touchFrame"].ToString();
                 touchTime = rawData["touchTime"].ToString();
@@ -151,6 +199,7 @@ namespace ReplayFx.Models.GameStats
 
             public PlayerKickoffStats(JObject rawData)
             {
+                Console.WriteLine("Model: [GameStats.PlayerKickoffStats]");
                 playerId = rawData["player.id"].ToString();
                 kickoffPosition = rawData["kickoffPosition"].ToString();
                 touchPosition = rawData["touchPosition"].ToString();
@@ -180,6 +229,7 @@ namespace ReplayFx.Models.GameStats
             public string distanceAlongPath { get; set; }
             public BallCarry(JObject rawData)
             {
+                Console.WriteLine("Model: [GameStats.BallCarry]");
                 startFrameNumber = rawData["startFrameNumber"].ToString();
                 endFrameNumber = rawData["endFrameNumber"].ToString();
                 playerId = rawData["playerId.id"].ToString();
@@ -199,6 +249,35 @@ namespace ReplayFx.Models.GameStats
         {
             JObject dataObject = data.ToObject<JObject>();
             return dataObject;
+        }
+        private JArray CreateArray(JToken data)
+        {
+            JObject obj = CreateObject(data);
+            JArray arr = obj.ToObject<JArray>();
+            return arr;
+        }
+
+        public static JObject[] GetFrameData(JArray rawFrameData)
+        {
+            List<JObject> frameList = new List<JObject>();
+            bool isFinished = false;
+            int count = 0;
+            while(!isFinished)
+            {
+                JObject frame;
+                try
+                {
+                    frame = rawFrameData[count].ToObject<JObject>();
+                    frameList.Add(frame);
+                }
+                catch
+                {
+                    isFinished = true;
+                }
+                count++;
+            }
+            JObject[] frameData = frameList.ToArray();
+            return frameData;
         }
 
         public static PlayerKickoffStats[] GetPlayerData(JArray playerArray)

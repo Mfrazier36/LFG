@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using ReplayFx.Models.Frame;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +6,9 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ReplayFx.Models.Data
+namespace ReplayFx.Models.Player
 {
-    public class PlayerStats : JObject
+    public class PlayerStats
     {
         public Boost boostStats { get; set; }
         public Distance distanceStats { get; set; }

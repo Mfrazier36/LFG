@@ -6,7 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 
-namespace ReplayFx.Models.Data
+namespace ReplayFx.Models.Team
 {
     public class Team
     {
@@ -18,34 +18,25 @@ namespace ReplayFx.Models.Data
 
         public Team(JObject rawData)
         {
+            Console.WriteLine("Model: [Team]");
             playerIds = GetMemberIds(JArray.FromObject(rawData["playerIds"]));
             score = rawData["score"].ToString();
             isOrange = rawData["isOrange"].ToString();
             teamStats = new TeamStats(CreateObject(rawData["stats"]));
         }
 
-        public static string[] GetMemberIds(JArray playerArray)
+        public static string[] GetMemberIds(JArray memberIdArray)
         {
-            List<string> players = new List<string>();
-            bool isFinished = false;
-            int count = 0;
-            while (!isFinished)
+            List<string> members = new List<string>();
+            foreach (var item in memberIdArray)
             {
-                string playerID = "";
-                try
-                {
-                    playerID = playerArray[count]["id"].ToString();
-                    players.Add(playerID);
-                }
-                catch
-                {
-                    isFinished = false;
-                }
-                count++;
+                JObject obj = item.ToObject<JObject>();
+                string id = obj["id"].ToString();
+                members.Add(id);
             }
-            string[] playerIdArray = players.ToArray();
-            return playerIdArray;
+            return members.ToArray();
         }
+
         private static JObject CreateObject(JToken data)
         {
             JObject dataObject = data.ToObject<JObject>();

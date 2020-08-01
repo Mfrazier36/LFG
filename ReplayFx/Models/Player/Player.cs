@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks.Sources;
 using System.Transactions;
 
-namespace ReplayFx.Models.Data
+namespace ReplayFx.Models.Player
 {
     public class Player
     {
