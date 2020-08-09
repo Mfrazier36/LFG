@@ -23,18 +23,22 @@ namespace ReplayFx.Services
             var pythonEngine = Python.CreateEngine();
 
             var EngineScope = pythonEngine.CreateScope();
-            string carballFileName =  Path.GetRelativePath("../..", "../lib/carball/carball/__init__.py");
+
+            string carballFileName =  Path.GetRelativePath("..", "../lib/carball/carball/__init__.py");
 
             var source = pythonEngine.CreateScriptSourceFromFile(carballFileName);
-
-            var compiledCode = source.Compile();
-
+            Console.WriteLine(source);
             var carballCmd = $"carball -i ${fileString} --json dumpFile.json";
-
-            var carballScript = new JObject(carballCmd)
+            var carballScript = new JObject(carballCmd.ToString())
                                         .ToObject<ScriptScope>();
+            var compiledCode = source.Execute(carballScript);
+            //var result = compiledCode.Compile(carballScript);
+            Console.WriteLine(compiledCode);
+            Console.ReadLine();            
+            //JValue
 
-            var result = compiledCode.Execute(carballScript);
+
+
             
 
         }
