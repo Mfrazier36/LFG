@@ -2,14 +2,52 @@
 using Newtonsoft.Json.Linq;
 using ReplayFx.Models;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace ReplayFx.Helpers
 {
     public class DataBot
     {
-        public GameData DecompileReplayData(string FilePath)
+        private List<string> ReplayFiles;
+
+        private void InitializeDataBot()
+        {
+            ReplayFiles = new List<string>();
+        }
+
+        public List<string> LoadReplayFile(string? file)
+        {
+            try
+            {
+                ReplayFiles.Add(file);
+            }
+            catch
+            {
+                InitializeDataBot();
+
+                ReplayFiles.Add(file);
+            }
+
+            return ReplayFiles;
+        }
+
+        public List<GameData> ProcessData()
+        {
+            List<GameData> GameDataList = new List<GameData>();
+            foreach (string FilePath in ReplayFiles)
+            {
+                GameData GameData = DecompileReplayData(FilePath);
+
+                GameDataList.Add(GameData);
+            }
+
+            return GameDataList;
+        }
+
+        private GameData DecompileReplayData(string FilePath)
         {
             var CarballFile = Path.GetFullPath("../wwwroot/lib/carball/init.py");
             var CarballDirectory = Path.GetDirectoryName(CarballFile);
@@ -37,49 +75,99 @@ namespace ReplayFx.Helpers
 
             return gameData;
         }
-        public MatchData BuildMatchData(JObject jsonData)
+
+        private void BuildGameData(JObject jsonData)
         {
-            JObject metadataObj = JObject.FromObject(jsonData["gameMetadata"]);
+            string MatchDataJsonKey = "gameMetadata";
+            string FrameDataJsonKey = "gameStats";
+            string BallDataJsonKey = "ballStats";
+            string PartyDataJsonKey = "parties";
+            string PlayerDataJsonKey = "players";
+            string TeamDataJsonKey = "teams";
 
-            MatchData metadata = new MatchData();
-            metadata.ReplayId = metadataObj["id"].ToString();
-            metadata.ReplayName = metadataObj["name"].ToString();
-            metadata.MapName = metadataObj["map"].ToString();
-            metadata.ReplayVersion = metadataObj["version"].ToString();
-            metadata.TotGameTime = metadataObj["time"].ToString();
-            metadata.TotFrames = metadataObj["frames"].ToString();
-            metadata.TeamAlphaScore = metadataObj["score.team0Score"].ToString();
-            metadata.TeamBravoScore = metadataObj["score.team1Score"].ToString();
-            metadata.PrimaryPlayerId = metadataObj["primaryPlayer.id"].ToString();
-            metadata.FileLength = metadataObj["length"].ToString();
-            metadata.GameServerId = metadataObj["gameServerId"].ToString();
-            metadata.GameServerName = metadataObj["serverName"].ToString();
-            metadata.MatchGuid = metadataObj["matchGuid"].ToObject<Guid>();
-            metadata.TeamSize = metadataObj["teamSize"].ToString();
-            metadata.GameMode = metadataObj["playlist"].ToString();
 
+            Console.WriteLine("Building FrameData");
+            List<FrameData> frameData = new List<FrameData>();
+            JObject FrameData = JObject.FromObject(jsonData[FrameDataJsonKey]);
+
+            
+            JObject BallData = JObject.FromObject(FrameData[BallDataJsonKey]);
+            BallData ballData = BuildBallData(BallData);
+            ballData.NeutralPosessionTime = (string)FrameData["neutralPosessionTime"];
+
+            JObject MatchData = JObject.FromObject(jsonData[MatchDataJsonKey]);
+            MatchData matchData = BuildMatchData(MatchData);
+
+            JArray PlayerList = JArray.FromObject(jsonData[PlayerDataJsonKey]);
+            List<PlayerData> playerData = new List<PlayerData>();
+            foreach (var player in PlayerList)
+            {
+                JObject playerObject = JObject.FromObject(player);
+                PlayerData playerStats = BuildPlayerData(playerObject);
+                playerData.Add(playerStats);
+            }
+
+            JArray PartyList = JArray.FromObject(jsonData[PartyDataJsonKey]);
+            List<TeamData> teamData = new List<TeamData>();
+            JArray TeamList = JArray.FromObject(jsonData[TeamDataJsonKey]);
+            foreach (var team in TeamList)
+            {
+                JObject teamObject = JObject.FromObject(team);
+                TeamData teamStats = BuildTeamData(teamObject);
+
+                string ScoreLabel = teamStats.IsOrange ? "TeamBravoScore" : "TeamAlphaScore";
+                matchData.[ScoreLabel] = teamStats.Score;
+
+                teamData.Add(teamStats);
+            }
+        }
+
+        private MatchData BuildMatchData(JObject metadataObj)
+        {
+            Console.WriteLine("Building Match Data");
+            MatchData metadata = new MatchData
+            {
+                ReplayId = metadataObj["id"].ToString(),
+                ReplayName = metadataObj["name"].ToString(),
+                MapName = metadataObj["map"].ToString(),
+                ReplayVersion = metadataObj["version"].ToString(),
+                TotGameTime = metadataObj["time"].ToString(),
+                TotFrames = metadataObj["frames"].ToString(),
+                TeamAlphaScore = metadataObj["score.team0Score"].ToString(),
+                TeamBravoScore = metadataObj["score.team1Score"].ToString(),
+                PrimaryPlayerId = metadataObj["primaryPlayer.id"].ToString(),
+                FileLength = metadataObj["length"].ToString(),
+                GameServerId = metadataObj["gameServerId"].ToString(),
+                GameServerName = metadataObj["serverName"].ToString(),
+                MatchGuid = metadataObj["matchGuid"].ToObject<Guid>(),
+                TeamSize = metadataObj["teamSize"].ToString(),
+                GameMode = metadataObj["playlist"].ToString()
+            };
+
+            Console.WriteLine($"Match ${metadata.MatchGuid} Finished Building!");
             return metadata;
         }
 
-        public PlayerData BuildPlayerData(JObject jsonData)
+        private PlayerData BuildPlayerData(JObject playerJson)
         {
-            JObject playerdataObj = JObject.FromObject(jsonData["players"]);
+            Console.WriteLine("Building Player Data");
+            PlayerData playerdata = new PlayerData
+            {
+                PlayerId = (string)playerJson["playerId"]["id"],
+                Name = (string)playerJson["name"],
+                TitleId = (string)playerJson["titleId"],
+                Score = (string)playerJson["score"],
+                Goals = (string)playerJson["goals"],
+                Assists = (string)playerJson["assists"],
+                Shots = (string)playerJson["shots"],
+                IsOrange = (string)playerJson["isOrange"],
+                TimeInGame = (string)playerJson["timeInGame"],
+                CarId = (string)playerJson["loadout"]["carId"],
+            };
 
-            PlayerData playerdata = new PlayerData();
+            JObject StatObj = JObject.FromObject(playerJson["stats"]); // PlayerStats
 
-            playerdata.PlayerId = (string)playerdataObj["id"];
-            playerdata.Name = (string)playerdataObj["name"];
-            playerdata.TitleId = (string)playerdataObj["titleId"];
-            playerdata.Score = (string)playerdataObj["score"];
-            playerdata.Goals = (string)playerdataObj["goals"];
-            playerdata.Assists = (string)playerdataObj["assists"];
-            playerdata.Shots = (string)playerdataObj["shots"];
-            playerdata.IsOrange = (string)playerdataObj["isOrange"];
-            playerdata.TimeInGame = (string)playerdataObj["timeInGame"];
-            playerdata.CarId = (string)playerdataObj["loadout.carId"];
-
-            JObject StatObj = JObject.FromObject(playerdataObj["stats"]); // PlayerStats
-
+            Console.WriteLine("Building Player Boost Data");
             JObject BoostObj = JObject.FromObject(StatObj["boost"]);    //  Boost
             playerdata.BoostUsage = (string)BoostObj["boostUsage"];
             playerdata.NumSmallBoost = (string)BoostObj["numSmallBoost"];
@@ -93,6 +181,7 @@ namespace ReplayFx.Helpers
             playerdata.TotWastedBigBoost = (string)BoostObj["totalWastedBigBoost"];
             playerdata.TotWastedSmallBoost = (string)BoostObj["totalWastedSmallBoost"];
 
+            Console.WriteLine("Building Player Distance Data");
             JObject DistanceObj = JObject.FromObject(StatObj["distance"]);  //  Distance
             playerdata.DistanceBallHitBackward = (string)DistanceObj["ballHitBackward"];
             playerdata.DistanceBallHitForward = (string)DistanceObj["ballHitForward"];
@@ -100,6 +189,7 @@ namespace ReplayFx.Helpers
             playerdata.TimeFurthestFromBall = (string)DistanceObj["timeFurthestFromBall"];
             playerdata.TimeCloseToBall = (string)DistanceObj["timeCloseToBall"];
 
+            Console.WriteLine("Building Player Posession Data");
             JObject PosessionObj = JObject.FromObject(StatObj["posession"]);    //  Posession
             playerdata.TotPossessionTime = (string)PosessionObj["possessionTime"];
             playerdata.Turnovers = (string)PosessionObj["turnovers"];
@@ -107,6 +197,7 @@ namespace ReplayFx.Helpers
             playerdata.TurnoversOnTheirHalf = (string)PosessionObj["turnoversOnTheirHalf"];
             playerdata.WonTurnovers = (string)PosessionObj["wonTurnovers"];
 
+            Console.WriteLine("Building Player Positional Data");
             JObject PositionObj = JObject.FromObject(StatObj["positionalTendencies"]);  //  Position
             playerdata.TimeOnGround = (string)PositionObj["timeOnGround"];
             playerdata.TimeLowInAir = (string)PositionObj["timeLowInAir"];
@@ -122,6 +213,7 @@ namespace ReplayFx.Helpers
             playerdata.TimeInCorner = (string)PositionObj["timeInCorner"];
             playerdata.TimeOnWall = (string)PositionObj["timeOnWall"];
 
+            Console.WriteLine("Building Player Relative Position Data");
             JObject RelativePosObj = JObject.FromObject(StatObj["relativePositioning"]);    //  RelativePosition
             playerdata.TimeInFrontOfCenterOfMass = (string)RelativePosObj["timeInFrontOfCenterOfMass"];
             playerdata.TimeBehindCenterOfMass = (string)RelativePosObj["timeBehindCenterOfMass"];
@@ -129,11 +221,13 @@ namespace ReplayFx.Helpers
             playerdata.TimeMostBackPlayer = (string)RelativePosObj["timeMostBackPlayer"];
             playerdata.TimeBetweenPlayers = (string)RelativePosObj["timeBetweenPlayers"];
 
+            Console.WriteLine("Building Player Averages Data");
             JObject AvgsObj = JObject.FromObject(StatObj["averages"]);  //  Avgs
             playerdata.AvgSpeed = (string)AvgsObj["averageSpeed"];
             playerdata.AvgHitDistance = (string)AvgsObj["averageHitDistance"];
             playerdata.AvgDistanceFromCenter = (string)AvgsObj["averageDistanceFromCenter"];
 
+            Console.WriteLine("Building Player Hit Count Data");
             JObject HitCountObj = JObject.FromObject(StatObj["hitCounts"]); //  HitCounts
             playerdata.TotHits = (string)HitCountObj["totalHits"];
             playerdata.TotPasses = (string)HitCountObj["totalPasses"];
@@ -143,26 +237,32 @@ namespace ReplayFx.Helpers
             playerdata.TotAerials = (string)HitCountObj["totalAerials"];
             playerdata.TotClears = (string)HitCountObj["totalClears"];
 
+            Console.WriteLine("Building Player Speed Data");
             JObject SpeedObj = JObject.FromObject(StatObj["speed"]);    //  Speed
             playerdata.TimeAtSlowSpeed = (string)SpeedObj["timeAtSlowSpeed"];
             playerdata.TimeAtSuperSonic = (string)SpeedObj["timeAtSuperSonic"];
             playerdata.TimeAtBoostSpeed = (string)SpeedObj["timeAtBoostSpeed"];
 
+            Console.WriteLine("Building Player PerPosession Data");
             JObject PerPosessionObj = JObject.FromObject(StatObj["perPossessionStats"]);    //  PerPosession
             playerdata.PpAvgDuration = (string)PerPosessionObj["averageDuration"];
             playerdata.PpAvgHits = (string)PerPosessionObj["averageHits"];
             playerdata.PpTotCount = (string)PerPosessionObj["count"];
-            playerdata.PpAvgPass = (string)PerPosessionObj["averageCounts.pass"];
-            playerdata.PpAvgPassed = (string)PerPosessionObj["averageCounts.passed"];
-            playerdata.PpAvgDribble = (string)PerPosessionObj["averageCounts.dribble"];
-            playerdata.PpAvgDribbleContinuation = (string)PerPosessionObj["averageCounts.dribbleContinuation"];
-            playerdata.PpAvgShot = (string)PerPosessionObj["averageCounts.shot"];
-            playerdata.PpAvgGoal = (string)PerPosessionObj["averageCounts.goal"];
-            playerdata.PpAvgAssist = (string)PerPosessionObj["averageCounts.assist"];
-            playerdata.PpAvgAssisted = (string)PerPosessionObj["averageCounts.assisted"];
-            playerdata.PpAvgSave = (string)PerPosessionObj["averageCounts.save"];
-            playerdata.PpAvgAerial = (string)PerPosessionObj["averageCounts.aerial"];
 
+            Console.WriteLine("Building Player Average Count Data");
+            JObject AverageCountObj = JObject.FromObject(PerPosessionObj["averageCounts"]);
+            playerdata.PpAvgPass = (string)AverageCountObj["pass"];
+            playerdata.PpAvgPassed = (string)AverageCountObj["passed"];
+            playerdata.PpAvgDribble = (string)AverageCountObj["dribble"];
+            playerdata.PpAvgDribbleContinuation = (string)AverageCountObj["dribbleContinuation"];
+            playerdata.PpAvgShot = (string)AverageCountObj["shot"];
+            playerdata.PpAvgGoal = (string)AverageCountObj["goal"];
+            playerdata.PpAvgAssist = (string)AverageCountObj["assist"];
+            playerdata.PpAvgAssisted = (string)AverageCountObj["assisted"];
+            playerdata.PpAvgSave = (string)AverageCountObj["save"];
+            playerdata.PpAvgAerial = (string)AverageCountObj["aerial"];
+
+            Console.WriteLine("Building Player Ball Carry Data");
             JObject BallCarryObj = JObject.FromObject(StatObj["ballCarries"]);  //  BallCarry
             playerdata.TotCarries = (string)BallCarryObj["totalCarries"];
             playerdata.LongestCarry = (string)BallCarryObj["longestCarry"];
@@ -171,9 +271,13 @@ namespace ReplayFx.Helpers
             playerdata.AvgCarryTime = (string)BallCarryObj["averageCarryTime"];
             playerdata.FastestCarrySpeed = (string)BallCarryObj["fastestCarrySpeed"];
             playerdata.TotCarryDistance = (string)BallCarryObj["totalCarryDistance"];
-            playerdata.AvgCarrySpeed = (string)BallCarryObj["carryStats.averageCarrySpeed"];
-            playerdata.DistanceAlongPath = (string)BallCarryObj["carryStats.distanceAlongPath"];
 
+            Console.WriteLine("Building Player Ball Carry Stat Data");
+            JObject CarryStatObj = JObject.FromObject(BallCarryObj["carryStats"]); 
+            playerdata.AvgCarrySpeed = (string)CarryStatObj["averageCarrySpeed"];
+            playerdata.DistanceAlongPath = (string)CarryStatObj["distanceAlongPath"];
+
+            Console.WriteLine("Building Player Kickoff Data");
             JObject KickoffObj = JObject.FromObject(StatObj["kickoffStats"]);   //  Kickoff
             playerdata.TotKickoffs = (string)KickoffObj["totalKickoffs"];
             playerdata.NumTimeCheat = (string)KickoffObj["numTimeCheat"];
@@ -181,34 +285,39 @@ namespace ReplayFx.Helpers
             playerdata.NumTimeFirstTouch = (string)KickoffObj["numTimeFirstTouch"];
             playerdata.AvgBoostUsed = (string)KickoffObj["averageBoostUsed"];
 
+            Console.WriteLine($"Player ${playerdata.PlayerId} Finished Building!");
             return playerdata;
         }
 
-        public TeamData BuildTeamData(JObject jsonData)
+        private TeamData BuildTeamData(JObject teamJson)
         {
-            JObject TeamDataObj = JObject.FromObject(jsonData["players"]);
-            JObject PartyDataObj = JObject.FromObject(jsonData["parties"]);
+            Console.WriteLine("Building Team Data");
 
-            TeamData teamdata = new TeamData();   //  TeamData
-            //teamdata.playerIds = jsonData["playerIds"].ToString().ToArray<string>();
-            teamdata.Score = (string)jsonData["score"];
-            teamdata.IsOrange = (string)jsonData["isOrange"];
+            TeamData teamdata = new TeamData   //  TeamData
+            {
+                Score = (string)teamJson["score"],
+                IsOrange = (bool)teamJson["isOrange"]
+            };
 
-            JObject PosessionObj = JObject.FromObject(jsonData["posession"]);
+            Console.WriteLine("Building Team Posession Data");
+            JObject PosessionObj = JObject.FromObject(teamJson["posession"]);
             teamdata.TotPosessionTime = (string)PosessionObj["posessionTime"];
             teamdata.Turnovers = (string)PosessionObj["turnovers"];
             teamdata.TurnoversOnMyHalf = (string)PosessionObj["turnoversOnMyHalf"];
             teamdata.TurnoversOnTheirHalf = (string)PosessionObj["turnoversOnTheirHalf"];
             teamdata.WonTurnovers = (string)PosessionObj["turnovwonTurnoversers"];
 
-            JObject HitCountObj = JObject.FromObject(jsonData["hitCounts"]);
+            Console.WriteLine("Building Team HitCount Data");
+            JObject HitCountObj = JObject.FromObject(teamJson["hitCounts"]);
             teamdata.TotHits = (string)HitCountObj["totalHits"];
             teamdata.TotPasses = (string)HitCountObj["totalPasses"];
             teamdata.TotSaves = (string)HitCountObj["totalSaves"];
             teamdata.TotDribbleContinuations = (string)HitCountObj["totalDribbleConts"];
             teamdata.TotAerials = (string)HitCountObj["totalAerials"];
 
-            JObject PositionObj = JObject.FromObject(jsonData["centerOfMass"]);
+            Console.WriteLine("Building Team Positional Data");
+            JObject PositionObj = JObject.FromObject(teamJson["centerOfMass"]);
+            // TODO: TOUCH !
             teamdata.AvgDistanceFromCenter = (string)PositionObj["averageDistanceFromCenter"];
             teamdata.AvgMaxDistanceFromCenter = (string)PositionObj["averageMaxDistanceFromCenter"];
             teamdata.TimeClumped = (string)PositionObj["timeClumped"];
@@ -227,12 +336,15 @@ namespace ReplayFx.Helpers
             teamdata.TimeInCorner = (string)PositionObj["positionalTendencies.timeInCorner"];
             teamdata.TimeOnWall = (string)PositionObj["positionalTendencies.timeOnWall"];
 
+            string teamName = teamdata.IsOrange ? "Bravo" : "Alpha";
+            Console.WriteLine($"Team ${teamName} Finished Building!");
             return teamdata;
         }
 
-        public BallData BuildBallData(JObject jsonData)
+        private BallData BuildBallData(JObject ballJson)
         {
-            JObject GameStatObj = JObject.FromObject(jsonData["gameStats"]);
+            Console.WriteLine("Building Ball Data");
+            JObject GameStatObj = JObject.FromObject(ballJson["gameStats"]);
             JObject BallObj = JObject.FromObject(GameStatObj["ballStats"]);
 
             BallData balldata = new BallData();
@@ -249,8 +361,9 @@ namespace ReplayFx.Helpers
             balldata.TimeInDefendingHalf= (string)BallObj["timeInDefendingHalf"];
             balldata.TimeLowInAir= (string)BallObj["timeLowInAir"];
 
-            balldata.NeutralPosessionTime = (string)GameStatObj["neutralPosessionTime"]; // GameStats(FrameData)
+            //balldata.NeutralPosessionTime = (string)GameStatObj["neutralPosessionTime"]; // GameStats(FrameData)
 
+            Console.WriteLine("Ball Data Finished Building!");
             return balldata;
         }
             

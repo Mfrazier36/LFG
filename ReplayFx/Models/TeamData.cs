@@ -23,7 +23,7 @@ namespace ReplayFx.Models
         public string MemberId7 { get; set; }
         public string MemberId8 { get; set; }
         public string Score { get; set; }
-        public string IsOrange { get; set; }
+        public bool IsOrange { get; set; }
         public string TotPosessionTime { get; set; }
         public string Turnovers { get; set; }
         public string TurnoversOnMyHalf { get; set; }
