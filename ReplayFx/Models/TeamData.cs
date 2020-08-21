@@ -8,50 +8,50 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ReplayFx.Models
 {
-    public class TeamData
+    public class TeamData : DbEntry
     {
         [Key]
-        public int Id { get; set; }
-        public Guid matchGuid { get; set; }
-        public string leaderId { get; set; }
-        public string memberId1 { get; set; }
-        public string memberId2 { get; set; }
-        public string memberId3 { get; set; }
-        public string memberId4 { get; set; }
-        public string memberId5 { get; set; }
-        public string memberId6 { get; set; }
-        public string memberId7 { get; set; }
-        public string memberId8 { get; set; }
-        public string score { get; set; }
-        public string isOrange { get; set; }
-        public string totalPosessionTime { get; set; }
-        public string turnovers { get; set; }
-        public string turnoversOnMyHalf { get; set; }
-        public string turnoversOnTheirHalf { get; set; }
-        public string wonTurnovers { get; set; }
-        public string totalHits { get; set; }
-        public string totalPasses { get; set; }
-        public string totalSaves { get; set; }
-        public string totalShots { get; set; }
-        public string totalDribbleContinuations { get; set; }
-        public string totalAerials { get; set; }
-        public string totalClears { get; set; }
-        public string timeOnGround { get; set; }
-        public string timeLowInAir { get; set; }
-        public string timeHighInAir { get; set; }
-        public string timeInDefendingHalf { get; set; }
-        public string timeInAttackingHalf { get; set; }
-        public string timeInDefendingThird { get; set; }
-        public string timeInNeutralThird { get; set; }
-        public string timeInAttackingThird { get; set; }
-        public string timeBehindBall { get; set; }
-        public string timeInFrontBall { get; set; }
-        public string timeNearWall { get; set; }
-        public string timeInCorner { get; set; }
-        public string timeOnWall { get; set; }
-        public string averageDistanceFromCenter { get; set; }
-        public string averageMaxDistanceFromCenter { get; set; }
-        public string timeClumped { get; set; }
-        public string timeBoondocks { get; set; }
+        public int TeamId { get; set; }
+        public Guid MatchGuid { get; set; }
+        public string LeaderId { get; set; }
+        public string MemberId1 { get; set; }
+        public string MemberId2 { get; set; }
+        public string MemberId3 { get; set; }
+        public string MemberId4 { get; set; }
+        public string MemberId5 { get; set; }
+        public string MemberId6 { get; set; }
+        public string MemberId7 { get; set; }
+        public string MemberId8 { get; set; }
+        public string Score { get; set; }
+        public string IsOrange { get; set; }
+        public string TotPosessionTime { get; set; }
+        public string Turnovers { get; set; }
+        public string TurnoversOnMyHalf { get; set; }
+        public string TurnoversOnTheirHalf { get; set; }
+        public string WonTurnovers { get; set; }
+        public string TotHits { get; set; }
+        public string TotPasses { get; set; }
+        public string TotSaves { get; set; }
+        public string TotShots { get; set; }
+        public string TotDribbleContinuations { get; set; }
+        public string TotAerials { get; set; }
+        public string TotClears { get; set; }
+        public string TimeOnGround { get; set; }
+        public string TimeLowInAir { get; set; }
+        public string TimeHighInAir { get; set; }
+        public string TimeInDefendingHalf { get; set; }
+        public string TimeInAttackingHalf { get; set; }
+        public string TimeInDefendingThird { get; set; }
+        public string TimeInNeutralThird { get; set; }
+        public string TimeInAttackingThird { get; set; }
+        public string TimeBehindBall { get; set; }
+        public string TimeInFrontBall { get; set; }
+        public string TimeNearWall { get; set; }
+        public string TimeInCorner { get; set; }
+        public string TimeOnWall { get; set; }
+        public string AvgDistanceFromCenter { get; set; }
+        public string AvgMaxDistanceFromCenter { get; set; }
+        public string TimeClumped { get; set; }
+        public string TimeBoondocks { get; set; }
     }
 }

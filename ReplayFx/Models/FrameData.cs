@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Text.RegularExpressions;
 
 //    public class GameStats
 //{
@@ -10,60 +12,62 @@ using System.Data.Entity;
 //    public Kickoffs[] kickoffs { get; set; }
 //    public KickoffStats[] kickoffStats { get; set; }
 //    public BallCarry[] ballCarries { get; set; }
-//    public string neutralPossessionTime { get; set; }
+//    public string neutralPossessionTime { get; set; } // BALLDATA
 namespace ReplayFx.Models
 { 
     public enum FrameType
     {
         Kickoff, Carry, Bump, Hit, Demo, Goal,
     }
-    public class FrameData
+    public class FrameData : DbEntry
     {
         [Key]
-        public string id { get; set; }
-        public string type { get; set; } = null;
-        public Guid matchGuid { get; set; }
-        public int? playerId { get; set; } = null;
-        public int? attackerId { get; set; } = null;
-        public int? victimId { get; set; } = null;
-        public string frameNumber { get; set; } = null;
-        public string isKickoff { get; set; } = null;
-        public string kickoffGoal { get; set; } = null;
-        public string hasFlick { get; set; } = null;
-        public string isDemo { get; set; } = null;
-        public string boostUsed { get; set; } = null;
-        public string nextHitFrameNumber { get; set; } = null;
-        public string startFrameNumber { get; set; } = null;
-        public string endFrameNumber { get; set; } = null;
-        public string startFrame { get; set; } = null;
-        public string touchFrame { get; set; } = null;
-        public string distanceToGoal { get; set; } = null;
-        public string touchTime { get; set; } = null;
-        public string firstTouchPlayerId { get; set; } = null;
-        public string carryTime { get; set; } = null;
-        public string straightLineDistance { get; set; } = null;
-        public string averageCarrySpeed { get; set; } = null;
-        public string ballDistance { get; set; } = null;
-        public string distance { get; set; } = null;
-        public string collisionDistance { get; set; } = null;
-        public string goalNumber { get; set; } = null;
-        public string distanceAlongPath { get; set; } = null;
-        public string averageZDistance { get; set; } = null;
-        public string averageBallZVelocity { get; set; } = null;
-        public string varianceZDistance { get; set; } = null;
-        public string varianceBallZVelocity { get; set; } = null;
-        public string kickoffPosition { get; set; } = null;
-        public string touchPosition { get; set; } = null;
-        public string kickoffStartPosX { get; set; } = null;
-        public string kickoffStartPosY { get; set; } = null;
-        public string kickoffStartPosZ { get; set; } = null;
-        public string playerPosX { get; set; } = null;
-        public string playerPosY { get; set; } = null;
-        public string playerPosZ { get; set; } = null;
-        public string ballPosX { get; set; } = null;
-        public string ballPosY { get; set; } = null;
-        public string ballPosZ { get; set; } = null;
+        public string FrameId { get; set; }
+        public Guid MatchGuid { get; set; }
+        public string Type { get; set; } = null;
+        public int? PlayerId { get; set; } = null;
+        public int? AttackerId { get; set; } = null;
+        public int? VictimId { get; set; } = null;
+        public string FrameNumber { get; set; } = null;
+        public string IsKickoff { get; set; } = null;
+        public string KickoffGoal { get; set; } = null;
+        public string HasFlick { get; set; } = null;
+        public string IsDemo { get; set; } = null;
+        public string BoostUsed { get; set; } = null;
+        public string NextHitFrameNumber { get; set; } = null;
+        public string StartFrameNumber { get; set; } = null;
+        public string EndFrameNumber { get; set; } = null;
+        public string StartFrame { get; set; } = null;
+        public string TouchFrame { get; set; } = null;
+        public string DistanceToGoal { get; set; } = null;
+        public string TouchTime { get; set; } = null;
+        public string FirstTouchPlayerId { get; set; } = null;
+        public string CarryTime { get; set; } = null;
+        public string StraightLineDistance { get; set; } = null;
+        public string AvgCarrySpeed { get; set; } = null;
+        public string BallDistance { get; set; } = null;
+        public string Distance { get; set; } = null;
+        public string CollisionDistance { get; set; } = null;
+        public string GoalNumber { get; set; } = null;
+        public string DistanceAlongPath { get; set; } = null;
+        public string AvgZDistance { get; set; } = null;
+        public string AvgBallZVelocity { get; set; } = null;
+        public string VarianceZDistance { get; set; } = null;
+        public string VarianceBallZVelocity { get; set; } = null;
+        public string KickoffPosition { get; set; } = null;
+        public string TouchPosition { get; set; } = null;
+        public string KickoffStartPosX { get; set; } = null;
+        public string KickoffStartPosY { get; set; } = null;
+        public string KickoffStartPosZ { get; set; } = null;
+        public string PlayerPosX { get; set; } = null;
+        public string PlayerPosY { get; set; } = null;
+        public string PlayerPosZ { get; set; } = null;
+        public string BallPosX { get; set; } = null;
+        public string BallPosY { get; set; } = null;
+        public string BallPosZ { get; set; } = null;
 
-            
+        public BallData BallData { get; set; }
+        public MatchData MatchData { get; set; }
+        public PlayerData PlayerData { get; set; }
     }
 }

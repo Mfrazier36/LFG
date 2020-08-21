@@ -1,24 +1,27 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 
 namespace ReplayFx.Models
 {
-    public class BallData
+    public class BallData : DbEntry
     {
         [Key]
-        public MetaData matchGuid { get; set; }
-        public string timeOnGround { get; set; }
-        public string timeLowInAir { get; set; }
-        public string timeHighInAir { get; set; }
-        public string timeInDefendingHalf { get; set; }
-        public string timeInAttackingHalf { get; set; }
-        public string timeInNeutralThird { get; set; }
-        public string timeInAttackingThird { get; set; }
-        public string timeInDefendingThird { get; set; }
-        public string timeNearWall { get; set; }
-        public string timeInCorner { get; set; }
-        public string timeOnWall { get; set; }
-        public string averageSpeed { get; set; }
-        public string neutralPosessionTime { get; set; }
+        public Guid MatchGuid { get; set; }
+        public string TimeOnGround { get; set; }
+        public string TimeLowInAir { get; set; }
+        public string TimeHighInAir { get; set; }
+        public string TimeInDefendingHalf { get; set; }
+        public string TimeInAttackingHalf { get; set; }
+        public string TimeInNeutralThird { get; set; }
+        public string TimeInAttackingThird { get; set; }
+        public string TimeInDefendingThird { get; set; }
+        public string TimeNearWall { get; set; }
+        public string TimeInCorner { get; set; }
+        public string TimeOnWall { get; set; }
+        public string AvgSpeed { get; set; }
+        public string NeutralPosessionTime { get; set; } // GAME STATS
+
+        public MatchData MatchData { get; set; }
     }
 }
