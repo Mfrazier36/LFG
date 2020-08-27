@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29920.165
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReplayFx", "ReplayFx.csproj", "{D8490640-7A4C-487F-B32A-DF9031C125C5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReplayFx", "ReplayFx.csproj", "{A403ABE5-F7EF-4C13-AEA5-D00E5D5F1BE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D8490640-7A4C-487F-B32A-DF9031C125C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D8490640-7A4C-487F-B32A-DF9031C125C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D8490640-7A4C-487F-B32A-DF9031C125C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D8490640-7A4C-487F-B32A-DF9031C125C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A403ABE5-F7EF-4C13-AEA5-D00E5D5F1BE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A403ABE5-F7EF-4C13-AEA5-D00E5D5F1BE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A403ABE5-F7EF-4C13-AEA5-D00E5D5F1BE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A403ABE5-F7EF-4C13-AEA5-D00E5D5F1BE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {7D6ADA5E-1D4C-405E-A773-AC5FA4E8B3C6}
+		SolutionGuid = {1C3534C8-CC0A-4F35-A078-33A567CEB6FE}
 	EndGlobalSection
 EndGlobal

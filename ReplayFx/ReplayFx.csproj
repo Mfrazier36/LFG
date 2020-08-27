@@ -1,12 +1,51 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <None Include="wwwroot\lib\carball\.github\FUNDING.yml" />
+    <None Include="wwwroot\lib\carball\.github\workflows\benchmarking-master.yml" />
+    <None Include="wwwroot\lib\carball\.github\workflows\benchmarking.yml" />
+    <None Include="wwwroot\lib\carball\.github\workflows\wiki.yml" />
+    <None Include="wwwroot\lib\carball\.git\config" />
+    <None Include="wwwroot\lib\carball\.git\description" />
+    <None Include="wwwroot\lib\carball\.git\HEAD" />
+    <None Include="wwwroot\lib\carball\.git\hooks\applypatch-msg.sample" />
+    <None Include="wwwroot\lib\carball\.git\hooks\commit-msg.sample" />
+    <None Include="wwwroot\lib\carball\.git\hooks\fsmonitor-watchman.sample" />
+    <None Include="wwwroot\lib\carball\.git\hooks\post-update.sample" />
+    <None Include="wwwroot\lib\carball\.git\hooks\pre-applypatch.sample" />
+    <None Include="wwwroot\lib\carball\.git\hooks\pre-commit.sample" />
+    <None Include="wwwroot\lib\carball\.git\hooks\pre-merge-commit.sample" />
+    <None Include="wwwroot\lib\carball\.git\hooks\pre-push.sample" />
+    <None Include="wwwroot\lib\carball\.git\hooks\pre-rebase.sample" />
+    <None Include="wwwroot\lib\carball\.git\hooks\pre-receive.sample" />
+    <None Include="wwwroot\lib\carball\.git\hooks\prepare-commit-msg.sample" />
+    <None Include="wwwroot\lib\carball\.git\hooks\update.sample" />
+    <None Include="wwwroot\lib\carball\.git\index" />
+    <None Include="wwwroot\lib\carball\.git\info\exclude" />
+    <None Include="wwwroot\lib\carball\.git\logs\HEAD" />
+    <None Include="wwwroot\lib\carball\.git\logs\refs\heads\master" />
+    <None Include="wwwroot\lib\carball\.git\logs\refs\remotes\origin\HEAD" />
+    <None Include="wwwroot\lib\carball\.git\objects\pack\pack-c56595285439417ee5c4d5db60936872f607f25d.idx" />
+    <None Include="wwwroot\lib\carball\.git\objects\pack\pack-c56595285439417ee5c4d5db60936872f607f25d.pack" />
+    <None Include="wwwroot\lib\carball\.git\packed-refs" />
+    <None Include="wwwroot\lib\carball\.git\refs\heads\master" />
+    <None Include="wwwroot\lib\carball\.git\refs\remotes\origin\HEAD" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AvalonEdit" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.7" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\carball\.git\objects\info\" />
+    <Folder Include="wwwroot\lib\carball\.git\refs\tags\" />
   </ItemGroup>
 
 

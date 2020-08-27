@@ -2,7 +2,11 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<form name="login" class="text-center" method="get" action="/Home/index" onsubmit="console.log(event.currentTarget.Value)">
+    <h1> Welcome To Replay Fx </h1>
+    <div class="col-form-label"> Upload a file:    </div>
+    <input type="file" id="fileInput" class="custom-file-input border-dark" />
+    <button type="submit">
+        Submit
+    </button>
+</form>
