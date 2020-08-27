@@ -14,15 +14,15 @@ namespace ReplayFx.Models
 
         [Required] public TeamStats TeamStats { get; set; }
 
-        [Required] public string LeaderId { get; set; }
+        [Required] public int LeaderId { get; set; }
         public string Player1Id { get; set; }
         public string Player2Id { get; set; }
-        [AllowNull] public string Player3Id { get; set; }
-        [AllowNull] public string Player4Id { get; set; }
-        [AllowNull] public string Player5Id { get; set; }
-        [AllowNull] public string Player6Id { get; set; }
-        [AllowNull] public string Player7Id { get; set; }
-        [AllowNull] public string Player8Id { get; set; }
+        [AllowNull] public int Player3Id { get; set; }
+        [AllowNull] public int Player4Id { get; set; }
+        [AllowNull] public int Player5Id { get; set; }
+        [AllowNull] public int Player6Id { get; set; }
+        [AllowNull] public int Player7Id { get; set; }
+        [AllowNull] public int Player8Id { get; set; }
 
         public Player Player1 { get; set; }
         public Player Player2 { get; set; }

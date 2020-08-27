@@ -14,7 +14,7 @@ namespace ReplayFx.Models
             Required(ErrorMessage = "Please select file"),
             RegularExpression(@"([a-zA-Z0-s_\\.\-:])+(.Replay|.replay)$", ErrorMessage = "Only .replay files allowed")
         ]
-        public FileStream File { get; set; }
-        public string FileName { get; set; }
+        public virtual FileInput File { get; set; }
+        public DateTime DateTime { get; set; }
     }
 }

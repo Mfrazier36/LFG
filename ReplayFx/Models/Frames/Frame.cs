@@ -10,48 +10,48 @@ namespace ReplayFx.Models
         //[Required] public FrameType FrameType { get; set; }
         //[Required] public int MatchId { get; set; }
 
-        //public int PlayerId { get; set; }
-        //public int AttackerId { get; set; }
-        //public int VictimId { get; set; }
-        public string FrameNumber { get; set; } = null;
-        public string GoalNumber { get; set; } = null;
+        public int PlayerId { get; set; }
+        public int AttackerId { get; set; }
+        public int VictimId { get; set; }
+        public int FrameNumber { get; set; }
+        public int GoalNumber { get; set; }
+        public int FirstTouchPlayerId { get; set; }
 
 
         public bool IsKickoff { get; set; } = false;
         public bool IsDemo { get; set; } = false;
         public bool HasFlick { get; set; } = false;
         public bool BoostUsed { get; set; } = false;
-        public string TouchType { get; set; } = null;
-        public string KickoffGoal { get; set; } = null;
-        public string NextHitFrameNumber { get; set; } = null;
-        public string StartFrameNumber { get; set; } = null;
-        public string EndFrameNumber { get; set; } = null;
-        public string StartFrame { get; set; } = null;
-        public string TouchFrame { get; set; } = null;
-        public string DistanceToGoal { get; set; } = null;
-        public string TouchTime { get; set; } = null;
-        public string FirstTouchPlayerId { get; set; } = null;
-        public string CarryTime { get; set; } = null;
-        public string StraightLineDistance { get; set; } = null;
-        public string AvgCarrySpeed { get; set; } = null;
-        public string BallDistance { get; set; } = null;
-        public string Distance { get; set; } = null;
-        public string CollisionDistance { get; set; } = null;
-        public string DistanceAlongPath { get; set; } = null;
-        public string AvgZDistance { get; set; } = null;
-        public string AvgBallZVelocity { get; set; } = null;
-        public string VarianceZDistance { get; set; } = null;
-        public string VarianceBallZVelocity { get; set; } = null;
-        public string KickoffPosition { get; set; } = null;
-        public string TouchPosition { get; set; } = null;
-        public string KickoffStartPosX { get; set; } = null;
-        public string KickoffStartPosY { get; set; } = null;
-        public string KickoffStartPosZ { get; set; } = null;
-        public string PlayerPosX { get; set; } = null;
-        public string PlayerPosY { get; set; } = null;
-        public string PlayerPosZ { get; set; } = null;
-        public string BallPosX { get; set; } = null;
-        public string BallPosY { get; set; } = null;
-        public string BallPosZ { get; set; } = null;
+        public string TouchType { get; set; }
+        public bool KickoffGoal { get; set; }
+        public int NextHitFrameNumber { get; set; }
+        public int StartFrameNumber { get; set; }
+        public int EndFrameNumber { get; set; }
+        public int StartFrame { get; set; }
+        public int TouchFrame { get; set; }
+        public double DistanceToGoal { get; set; }
+        public double TouchTime { get; set; }
+        public double CarryTime { get; set; }
+        public double StraightLineDistance { get; set; }
+        public double AvgCarrySpeed { get; set; }
+        public double BallDistance { get; set; }
+        public double Distance { get; set; }
+        public double CollisionDistance { get; set; }
+        public double DistanceAlongPath { get; set; }
+        public double AvgZDistance { get; set; }
+        public double AvgBallZVelocity { get; set; }
+        public double VarianceZDistance { get; set; }
+        public double VarianceBallZVelocity { get; set; }
+        public string KickoffPosition { get; set; }
+        public string TouchPosition { get; set; }
+        public double KickoffStartPosX { get; set; }
+        public double KickoffStartPosY { get; set; }
+        public double KickoffStartPosZ { get; set; }
+        public double PlayerPosX { get; set; }
+        public double PlayerPosY { get; set; }
+        public double PlayerPosZ { get; set; }
+        public double BallPosX { get; set; }
+        public double BallPosY { get; set; }
+        public double BallPosZ { get; set; }
     }
 }

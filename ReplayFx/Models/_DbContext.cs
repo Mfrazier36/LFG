@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace ReplayFx.Models
 {
     public class _DbContext : DbContext
     {
-        public DbSet<Frame> Frames { get; set; }
-         public DbSet<MetaDataMode> Metadata { get; set; }
-        public DbSet<Player> Players { get; set; }
-        public DbSet<Team> Rosters { get; set; }
-        public DbSet<Team> Teams { get; set; }
+        public DbSet<List<Frame>> Frames { get; set; }
+        public DbSet<GameMetadata> GameMetadata { get; set; }
+        public DbSet<List<Player>> Players { get; set; }
+        public DbSet<List<Team>> Teams { get; set; }
     }
 }

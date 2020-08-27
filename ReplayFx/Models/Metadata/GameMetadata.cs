@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ReplayFx.Models
 {
-    public class MetaDataMode : Entry
+    public class GameMetadata : Entry
     {
         public int PrimaryPlayerId { get; set; }
         [Required] public int TeamBravoId { get; set; }

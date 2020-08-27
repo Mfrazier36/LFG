@@ -24,10 +24,6 @@ namespace ReplayFx.Controllers
         {
             Console.WriteLine(val);
 
-            //File inputFile = new File("farrago.txt");
-            //File outputFile = new File("outagain.txt");
-            //FileReader in = new FileReader(inputFile);
-            //FileWriter out = new FileWriter(outputFile);
 
             return View();
         }
