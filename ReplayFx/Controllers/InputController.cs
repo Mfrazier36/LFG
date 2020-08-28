@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using ReplayFx.Factories;
 using ReplayFx.Helpers;
 using ReplayFx.Models;
 
@@ -20,22 +21,22 @@ namespace ReplayFx.Controllers
         public _DbContext DecompileReplay([FromBody] JObject jsonData)
         {
 
-            JObject metaData = JBot.GetObject(_Constants.GameMetadata, jsonData);
-            GameMetadata metadata = JBot.BuildMetaData(metaData);
+            JObject metaData = JBot.ExtractObject(_Constants.GameMetadata, jsonData);
+            GameMetadata metadata = MetadataFactory.Build(metaData);
             _Context.Add(metadata);
 
-            JObject FrameData = JBot.GetObject(_Constants.gameStats, jsonData);
-            List<Frame> framedata = JBot.BuildFrameData(FrameData);
+            JObject FrameData = JBot.ExtractObject(_Constants.gameStats, jsonData);
+            List<Frame> framedata = JBot.CreateList<Frame>(FrameData);
             _Context.Add(framedata);
             
-            JArray playerData = JBot.GetArray(_Constants.Players, jsonData);
-            List<Player> playerdata = JBot.BuildPlayerData(playerData);
+            JArray playerData = JBot.ExtractArray(_Constants.Players, jsonData);
+            List<Player> playerdata = PlayerFactory.Build(playerData);
             _Context.Add(playerdata);
             
-            JArray teamData = JBot.GetArray(_Constants.Teams, jsonData);
-            JArray rosterData = JBot.GetArray(_Constants.Parties, jsonData);
-            JObject scoreData = JBot.GetObject(_Constants.Score, metaData);
-            List<Team> teamdata = JBot.BuildTeamData(teamData,rosterData, scoreData);
+            JArray teamData = JBot.ExtractArray(_Constants.Teams, jsonData);
+            JArray rosterData = JBot.ExtractArray(_Constants.Parties, jsonData);
+            JObject scoreData = JBot.ExtractObject(_Constants.Score, metaData);
+            List<Team> teamdata = TeamFactory.BuildTeamData(teamData,rosterData, scoreData);
             _Context.Add(teamdata);
 
             return _Context;
