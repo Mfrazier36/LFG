@@ -7,6 +7,85 @@ namespace ReplayFx.Models
 {
     public class _Constants
     {
+        public static List<string> HeaderKeySet = new List<string> {
+                                                                     GameMetadata, gameStats, 
+                                                                     Teams, Boost, Parties
+                                                                   };
+        public static List<string> FrameBoolSet = new List<string> {
+                                                                     IsDemo, HasFlick, IsBot
+                                                                   };
+        public static List<string> MetadataFrameSet = new List<string> { Goals, Demos };
+        public static List<string> GameStatsFrameSet = new List<string> { Hits, Bumps, Kickoffs, BallCarries };
+
+        public static List<string> HitFrameSet = new List<string> {
+                                                                    CollisionDistance, Distance, DistanceToGoal,
+                                                                    NextHitFrameNumber, GoalNumber, IsKickoff
+                                                                  };
+        public static List<string> KickoffFrameSet = new List<string> {
+                                                                        StartFrame, TouchFrame, TouchTime,
+                                                                        TouchType, KickoffPosition, TouchPosition,
+                                                                        Boost, BallDist,StartLeft
+                                                                      };
+        public static List<string> KickoffHeadProps = new List<string>
+                                                                    {
+                                                                        Touch, Players
+                                                                    };
+
+        public static List<string> SpeedSet = new List<string> { 
+                                                                 TimeAtSlowSpeed, TimeAtSlowSpeed, TimeAtSuperSonic 
+                                                               };
+        public static List<string> PosessionSet = new List<string> { 
+                                                                     PossessionTime, Turnovers, TurnoversOnMyHalf, 
+                                                                     TurnoversOnTheirHalf, WonTurnovers
+                                                                   };
+        public static List<string> PlayerHeaderSet = new List<string> { Name, TitleId, Score, 
+                                                                        Goals, Assists, TimeInGame 
+                                                                      };
+        public static List<string> MetaDataPropSet = new List<string> {
+                                                                        Name, Map,
+                                                                        Version, Time, Frames,
+                                                                        GameServerId, ServerName,
+                                                                        MatchGuid, TeamSize, GameMode
+                                                                      };
+        public static List<string> StatsHeaderSet = new List<string> {
+                                                                       Boost, Distance, Possession,
+                                                                       Averages, Speed, PerPossession,
+                                                                       averageCounts, BallCarries, carryStats,
+                                                                       KickoffStats, PositionalTendencies
+                                                                     };
+
+        public static List<string> HitCountSet = new List<string> {
+                                                                    Hits, TotalHits, Passes,
+                                                                    Saves, Shots, TotalShots,
+                                                                    Dribbles, Dribble, Aerial,
+                                                                    Aerials, Clears
+                                                                  };
+        public static List<string> BoostSet = new List<string> {
+                                                                 BoostUsage, NumSmallBoosts, NumLargeBoosts, WastedCollection,
+                                                                 WastedUsage, TimeFullBoost, TimeLowBoost, TimeNoBoost, 
+                                                                 NumStolenBoosts, AvgBoostLevel, WastedBig, WastedSmall, AvgBoostUsed
+                                                               };
+        public static List<string> DistanceSet = new List<string> {
+                                                                    BallHitBackward, BallHitForward, TimeClosestToBall,
+                                                                    TimeFurthestFromBall, TimeClosestToBall, TimeCloseToBall,
+                                                                    TimeFurthestFromTeamCenter
+                                                                  };
+        public static List<string> TendenciesSet = new List<string> {
+                                                                      TimeOnGround, TimeLowInAir, TimeHighInAir,
+                                                                      TimeDefendingHalf, TimeAttackingHalf, TimeDefendingThird,
+                                                                      TimeNeutralThird, TimeAttackingThird, TimeBehindBall,
+                                                                      TimeInFrontBall, TimeNearWall, TimeInCorner, TimeOnWall
+                                                                    };
+        public static List<string> BallCarrySet = new List<string> {
+                                                                     TotalCarries, LongestCarry, FurthestCarry,TotalCarryTime,AvgCarryTime, FastestCarrySpeed, TotalCarryDistance, 
+                                                                     CarryStats, AvgCarrySpeed, DistanceAlongPath, AvgZDistance, AvgBallZVelocity, VarianceZDistance, 
+                                                                     VarianceBallZVelocity
+                                                                   };
+        public static List<string> KickoffStatSet = new List<string> {
+                                                                       TotalKickoffs, NumTimeCheat,
+                                                                       NumTimeGoToBall, NumTimeFirstTouch, AvgBoostUsed
+                                                                     };
+
         public static string GameMetadata = "gameMetadata";
         public static string FrameNumber = "frameNumber";
         public static string TitleId = "titleId";
@@ -216,79 +295,5 @@ namespace ReplayFx.Models
 
         public static string Alpha = "Alpha";
         public static string Bravo = "Bravo";
-
-
-
-
-        public static List<string> IdHeaderSet = new List<string> { 
-                                                                    PlayerId, VictimId, AttackerId
-                                                                  };
-        public static List<string> HeaderKeySet = new List<string> { 
-                                                                     GameMetadata, gameStats, Teams, Boost, Parties
-                                                                   };
-        public static List<string> FrameBoolSet = new List<string> {
-                                                                     IsDemo, HasFlick, IsBot
-                                                                   };
-        public static List<string> MetadataFrameSet = new List<string> { Goals, Demos };
-        public static List<string> GameStatsFrameSet = new List<string> { Hits, Bumps, Kickoffs, BallCarries };
-
-        public static List<string> HitFrameSet = new List<string> {
-                                                                    CollisionDistance, Distance, DistanceToGoal,
-                                                                    NextHitFrameNumber, GoalNumber, IsKickoff
-                                                                  };
-        public static List<string> KickoffFrameSet = new List<string> {
-                                                                        StartFrame, TouchFrame, TouchTime,
-                                                                        TouchType, KickoffPosition, TouchPosition,
-                                                                        Boost, BallDist,StartLeft
-                                                                      };
-
-        public static List<string> SpeedSet = new List<string> { TimeAtSlowSpeed, TimeAtSlowSpeed, TimeAtSuperSonic };
-        public static List<string> PosessionSet = new List<string> { PossessionTime, Turnovers, TurnoversOnMyHalf, TurnoversOnTheirHalf, WonTurnovers };
-        public static List<string> PlayerHeaderSet = new List<string> { Name, TitleId, Score, Goals, Assists, TimeInGame };
-        public static List<string> MetadataHeaderSet = new List<string> {
-                                                                   FrameNumber, Name, Map, 
-                                                                   Version, Time, Frames,
-                                                                   GameServerId, ServerName, 
-                                                                   MatchGuid, TeamSize, GameMode
-                                                                 };
-        public static List<string> StatsHeaderSet = new List<string> { 
-                                                                       Boost, Distance, Possession, 
-                                                                       Averages, Speed, PerPossession, 
-                                                                       averageCounts, BallCarries, carryStats, 
-                                                                       KickoffStats, PositionalTendencies
-                                                                     };
-
-        public static List<string> HitCountSet = new List<string> { 
-                                                                    Hits, TotalHits, Passes, 
-                                                                    Saves, Shots, TotalShots, 
-                                                                    Dribbles, Dribble, Aerial,
-                                                                    Aerials, Clears
-                                                                  };
-        public static List<string> BoostSet = new List<string> {
-                                                                 BoostUsage, NumSmallBoosts, NumLargeBoosts, WastedCollection,
-                                                                 WastedUsage, TimeFullBoost, TimeLowBoost, TimeNoBoost, NumStolenBoosts,
-                                                                 AvgBoostLevel, WastedBig, WastedSmall, AvgBoostUsed
-                                                               };
-        public static List<string> DistanceSet = new List<string> {
-                                                                    BallHitBackward, BallHitForward, TimeClosestToBall,
-                                                                    TimeFurthestFromBall, TimeClosestToBall, TimeCloseToBall,
-                                                                    TimeFurthestFromTeamCenter
-                                                                  };
-        public static List<string> TendenciesSet = new List<string> {
-                                                                      TimeOnGround, TimeLowInAir, TimeHighInAir,
-                                                                      TimeDefendingHalf, TimeAttackingHalf, TimeDefendingThird,
-                                                                      TimeNeutralThird, TimeAttackingThird, TimeBehindBall,
-                                                                      TimeInFrontBall, TimeNearWall, TimeInCorner, TimeOnWall
-                                                                    };
-        public static List<string> BallCarrySet = new List<string> {
-                                                                     TotalCarries, LongestCarry, FurthestCarry, TotalCarryTime,
-                                                                     AvgCarryTime, FastestCarrySpeed, TotalCarryDistance, CarryStats,
-                                                                     AvgCarrySpeed, DistanceAlongPath, AvgZDistance, AvgBallZVelocity,
-                                                                     VarianceZDistance, VarianceBallZVelocity
-                                                                   };
-        public static List<string> KickoffStatSet = new List<string> {
-                                                                      TotalKickoffs, NumTimeCheat, NumTimeGoToBall, 
-                                                                      NumTimeFirstTouch, AvgBoostUsed
-                                                                     };
     }
 }

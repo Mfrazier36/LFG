@@ -1,32 +1,28 @@
-﻿using Microsoft.AspNetCore.DataProtection;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Newtonsoft.Json.Linq;
-using ReplayFx.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Diagnostics;
-using System.Dynamic;
-using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace ReplayFx.Helpers
 {
-    public class JBot : Bot
+    public class JBot : _ToolBag
     {
-        public static int ExtractInt(string Key, JObject Obj) { return (int)Obj[Key]; }
-        public static string ExtractString(string key, JObject Obj) { return (string)Obj[key]; }
-        public static double ExtractDouble(string Key, JObject Obj) { return (double)Obj[Key]; }
-        public static List<string> CreateList(ICollection<string> dataObj) { return dataObj.ToList<string>(); }
-        public static List<Obj> CreateList<Obj>() { return new List<Obj>(); }
-        public static List<Obj> CreateList<Obj>(Obj dataObj) { return CreateObject(dataObj).ToObject<List<Obj>>(); }
-        public static List<Obj> CreateList<Obj>(JObject dataObj) { return dataObj.ToObject<List<Obj>>(); }
+        public static int GetInt( string Key, JObject Obj ) { return (int)Obj[Key]; }
+        public static string GetString( string key, JObject Obj ) { return ( string)Obj[key]; }
+        public static double GetDouble( string Key, JObject Obj ) { return (double)Obj[Key]; }
+        public static JArray GetArray( string Key, JObject Obj ) { return JArray.FromObject(Obj[Key]); }
+        public static JObject GetObject( string Key, JObject Obj ) { return JObject.FromObject(Obj[Key]); }
+
         public static JArray CreateArray() { return new JArray(); }
-        public static JArray ExtractArray(string Key, JObject Obj) { return JArray.FromObject(Obj[Key]); }
+
+        public static List<IT> CreateList<IT>() { return new List<IT>(); }
+        //public static List<IT> CreateList<IT>( IConvertible dataObj ) { return JObject.FromObject(dataObj ).ToObject<List<IT>>(); }
+        public static List<IT> CreateList<IT>( IT dataObj ) { return JObject.FromObject(dataObj ).ToObject<List<IT>>(); }
+        public static List<string> CreateList( ICollection<string> dataObj ) { return dataObj.ToList<string>(); }
+
         public static JObject CreateObject() { return new JObject(); }
-        public static JObject ExtractObject(string Key, JObject Obj) { return JObject.FromObject(Obj[Key]); }
-        public static JObject CreateObject<Obj>(Obj dataObj) { return JObject.FromObject(dataObj); }
+        public static JObject CreateObject<IT>(IT Obj) { return JObject.FromObject(Obj); }
     }
 }

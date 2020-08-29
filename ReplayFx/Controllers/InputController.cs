@@ -21,23 +21,24 @@ namespace ReplayFx.Controllers
         public _DbContext DecompileReplay([FromBody] JObject jsonData)
         {
 
-            JObject metaData = JBot.ExtractObject(_Constants.GameMetadata, jsonData);
-            GameMetadata metadata = MetadataFactory.Build(metaData);
-            _Context.Add(metadata);
+            JObject metaData = JBot.GetObject(_Constants.GameMetadata, jsonData);
+            //GameMetadata metadata = XMetadataFactory.Build(metaData);
+            //_Context.Add(metadata);
 
-            JObject FrameData = JBot.ExtractObject(_Constants.gameStats, jsonData);
-            List<Frame> framedata = JBot.CreateList<Frame>(FrameData);
-            _Context.Add(framedata);
+            JObject FrameData = JBot.GetObject(_Constants.gameStats, jsonData);
+            //List<Frame> framedata = JBot.CreateList<Frame>(FrameData);
+            //_Context.Add(framedata);
             
-            JArray playerData = JBot.ExtractArray(_Constants.Players, jsonData);
-            List<Player> playerdata = PlayerFactory.Build(playerData);
-            _Context.Add(playerdata);
+            JArray playerData = JBot.GetArray(_Constants.Players, jsonData);
+            //List<Player> playerdata = XPlayerFactory.Build(playerData);
+            //_Context.Add(playerdata);
             
-            JArray teamData = JBot.ExtractArray(_Constants.Teams, jsonData);
-            JArray rosterData = JBot.ExtractArray(_Constants.Parties, jsonData);
-            JObject scoreData = JBot.ExtractObject(_Constants.Score, metaData);
-            List<Team> teamdata = TeamFactory.BuildTeamData(teamData,rosterData, scoreData);
-            _Context.Add(teamdata);
+            JArray teamData = JBot.GetArray(_Constants.Teams, jsonData);
+            JArray rosterData = JBot.GetArray(_Constants.Parties, jsonData);
+            JObject scoreData = JBot.GetObject(_Constants.Score, metaData);
+
+            //List<Team> teamdata = XTeamFactory.BuildTeamData(teamData,rosterData, scoreData);
+            //_Context.Add(teamdata);
 
             return _Context;
         }

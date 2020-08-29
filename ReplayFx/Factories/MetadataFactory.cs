@@ -13,9 +13,12 @@ namespace ReplayFx.Factories
         public static GameMetadata Build(JObject metadata)
         {
             GameMetadata _FinishedData = new GameMetadata();
+            List<string> MetadataProps = JBot.GetMetadataProps();
+            JObject PrimaryPlayerObj = JBot.GetObject(_Constants.PrimaryPlayer, metadata);
+            JObject BallObj = JBot.GetObject(_Constants.BallData, metadata);
 
-            _FinishedData = StatBot.AddStats<GameMetadata>(_FinishedData, metadata, _Constants.MetadataHeaderSet);
-            _FinishedData.PrimaryPlayerId = (int)JBot.ExtractObject(_Constants.PrimaryPlayer, metadata)[_Constants.Id];
+            _FinishedData = JBot.AddStats<GameMetadata>(_FinishedData, metadata, MetadataProps);
+            _FinishedData.PrimaryPlayerId = JBot.GetInt(_Constants.Id, PrimaryPlayerObj);
 
             return _FinishedData;
         }

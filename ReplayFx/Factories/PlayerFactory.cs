@@ -5,29 +5,40 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Data;
 
 namespace ReplayFx.Factories
 {
     public class PlayerFactory : _Factory
     {
-        public static List<Player> Build(JArray playerdata)
+        public List<Player> Build( JArray playerListJson )
         {
-            List<Player> _FinishedData = new List<Player>();
-
-            foreach (var player in playerdata)
+            List<Player> _FinishedData = JBot.CreateList<Player>();
+            foreach ( var item in playerListJson )
             {
-                JObject playerJson = JObject.FromObject(player);
-                Player playerNet = new Player();
-                JObject loadoutJson = JBot.ExtractObject(_Constants.Loadout, playerJson);
-                JObject statsJson = JBot.ExtractObject(_Constants.Stats, playerJson);
-                playerNet = StatBot.AddStats<Player>(playerNet, playerJson, _Constants.PlayerHeaderSet);
-                playerNet.Id = StatBot.ExtractPlayerId(playerJson);
-                playerNet.CarId = JBot.ExtractInt(_Constants.Car, loadoutJson);
-                playerNet.PlayerStats = StatFactory.Build<PlayerStats>(playerNet.PlayerStats, statsJson);
-
-                _FinishedData.Add(playerNet);
+                JObject playerJson = item.ToObject<JObject>();
+                Player playerData = Build(playerJson);
+                _FinishedData.Add(playerData);
             }
+            return _FinishedData;
+        }
 
+        private static Player Build( JObject playerJson )
+        {
+            JObject loadoutJson = JBot.GetObject(  _Constants.Loadout, playerJson );
+            JObject statsJson = JBot.GetObject( _Constants.Stats, playerJson );
+            Player _FinishedData = CreatePlayer();
+            _FinishedData.PlayerStats = BuildStats(statsJson);
+            _FinishedData.CarId = JBot.GetInt( _Constants.Car, playerJson );
+            _FinishedData.Id = JBot.GetPlayerId(playerJson);
+            return _FinishedData;
+        }
+
+        private static PlayerStats BuildStats( JObject statsJson )
+        {
+            PlayerStats _FinishedData = CreatePlayerStats();
+            List<string> StatHeadPropList= JBot.GetStatHeadProps();
+            _FinishedData = JBot.AddStats<PlayerStats>( _FinishedData, statsJson, StatHeadPropList);
             return _FinishedData;
         }
     }

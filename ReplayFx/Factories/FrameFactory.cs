@@ -3,90 +3,72 @@ using ReplayFx.Helpers;
 using ReplayFx.Models;
 using System;
 using System.Collections.Generic;
+using System.IO.Packaging;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 
 namespace ReplayFx.Factories
 {
     public class FrameFactory : _Factory
     {
-        public static Frame Build(JObject framedata)
-        {
-            Frame _FinishedData = new Frame();
-
-            bool hasStartFrame = framedata.ContainsKey(_Constants.StartFrame);
-            bool hasStartFrameNbr = framedata.ContainsKey(_Constants.StartFrameNumber);
-            bool hasEndFrame = framedata.ContainsKey(_Constants.EndFrameNumber);
-            bool isHitFrame = framedata.ContainsKey(_Constants.CollisionDistance);
-            bool isKickoffFrame = framedata.ContainsKey(_Constants.Touch);
-            bool isBumpFrame = framedata.ContainsKey(_Constants.IsDemo); // Attacker Victim
-
-
-            _FinishedData.FrameNumber = JBot.ExtractInt(_Constants.FrameNumber, framedata);
-            _FinishedData = ExtractIdsFromFrame(_FinishedData, framedata);
-            if (framedata.ContainsKey(_Constants.IsDemo))
-            {
-                _FinishedData.IsDemo = (bool)framedata[_Constants.IsDemo];
-            }
-            if (framedata.ContainsKey(_Constants.CollisionDistance))
-            {
-                _FinishedData = StatBot.AddStats<Frame>(_FinishedData, framedata, _Constants.HitFrameSet);
-            }
-            if (framedata.ContainsKey(_Constants.Touch))
-            {
-                _FinishedData = StatBot.AddStats<Frame>(_FinishedData, framedata, _Constants.KickoffFrameSet);
-            }
-            return _FinishedData;
-        }
-
-        public static List<Frame> Build(JArray framedata)
-        {
-            List <Frame> _FinishedData = JBot.CreateList<Frame>();
-
-
-
-            return _FinishedData;
-        }
-        public static List<Frame> ExtractFrames(JObject jsonObj)
+        public static List<Frame> Build( JObject frameJsonObj )
         {
             List<Frame> _FinishedData = JBot.CreateList<Frame>();
-            foreach (var header in _Constants.GameStatsFrameSet)
+            List<List<string>> _MetadataFrameSet = JBot.GetFrameHeadProps();
+            foreach (List<string> propList in _MetadataFrameSet)
             {
-                if (jsonObj.ContainsKey(header))
+                foreach (var property in propList)
                 {
-                    var frameJson = JBot.ExtractObject(header, jsonObj);
-                    Frame Frame = FrameFactory.Build(frameJson);
-                    _FinishedData.Add(Frame);
-                }
-            }
-            foreach (var header in _Constants.MetadataFrameSet)
-            {
-                if (jsonObj.ContainsKey(header))
-                {
-                    var frameJson = JBot.ExtractObject(header, jsonObj);
-                    Frame Frame = FrameFactory.Build(frameJson);
-                    _FinishedData.Add(Frame);
+                    if( JBot.HasProp(property, frameJsonObj))
+                    {
+                        JArray frameJsonList = JBot.GetArray( property, frameJsonObj);
+                        foreach (var frame in frameJsonList)
+                        {
+                            Frame _FinishedFrame = CreateFrame();
+                            JObject frameJson = JBot.CreateObject(frame);
+                            _FinishedFrame = BuildFrame(frameJson);
+                        }
+                    }
                 }
             }
             return _FinishedData;
         }
 
-        public static Frame ExtractIdsFromFrame(Frame modelObj, JObject jsonObj)
+        private static Frame BuildFrame(JObject frameJson)
         {
-            if (JBot.HasProp(_Constants.Player, jsonObj)
-                || JBot.HasProp<Frame>( _Constants.PlayerId, modelObj))
+            Frame _FinishedData = CreateFrame();
+            List<List<string>> _FrameProps = JBot.GetFrameProps();
+            foreach (var propList in _FrameProps)
             {
-                modelObj.PlayerId = StatBot.ExtractPlayerId(jsonObj);
+                _FinishedData = TryAddValue(_FinishedData, propList, frameJson);
             }
-            if (jsonObj.ContainsKey(_Constants.VictimId))
+            _FinishedData.PlayerId = JBot.GetPlayerId(frameJson);
+            _FinishedData.AttackerId = JBot.GetAttackerId(frameJson);
+            _FinishedData.VictimId = JBot.GetVictimId(frameJson);
+            return _FinishedData;
+        }
+
+        private static Frame TryAddValue(Frame modelObj, List<string> propList, JObject frameJson)
+        {
+            Frame _FinishedData = CreateFrame();
+            //foreach (var item in _Constants.KickoffHeadProps)
+            //{
+            //    if(JBot.HasProp<JObject>(item , frameJson))
+            //    {
+            //        frameJson
+            //    }
+            //}
+            foreach (string jsonProp in propList)
             {
-                modelObj.VictimId = StatBot.ExtractVictimId(jsonObj);
+                _FinishedData = JBot.TryAddStat<Frame>(jsonProp, modelObj, frameJson);
             }
-            if (jsonObj.ContainsKey(_Constants.AttackerId))
-            {
-                modelObj.VictimId = StatBot.ExtractAttackerId(jsonObj);
-            }
-            return modelObj;
+            return _FinishedData;
+        }
+
+        private static void CheckForTouch()
+        {
+
         }
     }
 }
