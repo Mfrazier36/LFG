@@ -1,14 +1,9 @@
 ﻿using Newtonsoft.Json.Linq;
-using ReplayFx.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Xps.Serialization;
 
 namespace ReplayFx.Helpers
-{ 
-    public class Tool_Props : Tool_Console
+{
+    public class PropHelper : CarballHelper
     {
         public static string GetNetProp( string Key) { return nameof( Key); }
 

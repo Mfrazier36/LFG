@@ -1,5 +1,3 @@
-using System;
-
 namespace ReplayFx.Models
 {
     public class Error

@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ReplayFx.Helpers
 {
-    public class Tool_Console
+    public class CarballHelper
     {
         readonly static string _CurrentLocation = ".";
         readonly static string _CarballPath = "~\\wwwroot\\lib\\carball\\init.py";

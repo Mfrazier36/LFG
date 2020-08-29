@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ReplayFx.Helpers
 {
-    public class Tool_Stats : Tool_Props
+    public class StatHelper : PropHelper
     {
         public static ObjTyp AddStats<ObjTyp>(ObjTyp modelObject, JObject jsonObject, List<string> propertyList)
         {
@@ -14,8 +14,8 @@ namespace ReplayFx.Helpers
             {
                 var NetLabel = nameof( jsonLabel);
                 if (
-                    Tool_Stats.HasProp(NetLabel, modelJson )
-                    && Tool_Stats.HasProp( jsonLabel, jsonObject)
+                    StatHelper.HasProp(NetLabel, modelJson )
+                    && StatHelper.HasProp( jsonLabel, jsonObject)
                     )
                 {
                     var propertyValue = JBot.GetObject( jsonLabel, jsonObject);
@@ -79,7 +79,6 @@ namespace ReplayFx.Helpers
         public static List<string> GetPlayerHeadProps() { return _PlayerHeadProps; }
         public static List<string> GetMetadataProps() { return _MetaDataHeadProps; }
         public static List<string> GetStatHeadProps() { return _StatHeadProps; }
-
         public static List<List<string>> GetFrameProps()
         {
             List<List<string>> PropertySetList = new List<List<string>>();
@@ -87,7 +86,6 @@ namespace ReplayFx.Helpers
             PropertySetList.Add(_KickoffFrameProps);
             return PropertySetList;
         }
-
         public static List<List<string>> GetFrameHeadProps()
         {
             List<List<string>> PropertySetList = new List<List<string>>();
@@ -96,8 +94,6 @@ namespace ReplayFx.Helpers
             PropertySetList.Add( _FrameBooleans );
             return PropertySetList;
         }
-
-
         public static List<List<string>> GetStatProps()
         {
             List<List<string>> PropertySetList = new List<List<string>>();
@@ -111,8 +107,6 @@ namespace ReplayFx.Helpers
             PropertySetList.Add( _KickoffProps );
             return PropertySetList;
         }
-
-
         public static IT GetPositionProps<IT>(IT destination, JObject source)
         {
             JObject destJson = JObject.FromObject(destination);
@@ -124,7 +118,6 @@ namespace ReplayFx.Helpers
             IT _FinishedData = destJson.ToObject<IT>();
             return _FinishedData;
         }
-
         private static readonly List<string> _KickoffFrameProps = _Constants.KickoffFrameSet;
         private static readonly List<string> _HitFrameProps = _Constants.HitFrameSet;
         private static readonly List<string> _HeaderProps = _Constants.HeaderKeySet;

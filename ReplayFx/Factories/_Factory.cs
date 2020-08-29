@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
 using ReplayFx.Models;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ReplayFx.Factories
 {

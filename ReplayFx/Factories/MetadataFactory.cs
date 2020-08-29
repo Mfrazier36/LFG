@@ -1,10 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using ReplayFx.Helpers;
 using ReplayFx.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ReplayFx.Factories
 {

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ReplayFx.Models
+﻿namespace ReplayFx.Models
 {
-    public class Ball : Entry
+	public class Ball : Entry
     {
 		public string AvgSpeed { get; set; }
 		public string TimeNeutral { get; set; }

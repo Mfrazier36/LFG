@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ReplayFx.Models
 {
@@ -16,7 +13,6 @@ namespace ReplayFx.Models
                                                                    };
         public static List<string> MetadataFrameSet = new List<string> { Goals, Demos };
         public static List<string> GameStatsFrameSet = new List<string> { Hits, Bumps, Kickoffs, BallCarries };
-
         public static List<string> HitFrameSet = new List<string> {
                                                                     CollisionDistance, Distance, DistanceToGoal,
                                                                     NextHitFrameNumber, GoalNumber, IsKickoff
@@ -85,7 +81,6 @@ namespace ReplayFx.Models
                                                                        TotalKickoffs, NumTimeCheat,
                                                                        NumTimeGoToBall, NumTimeFirstTouch, AvgBoostUsed
                                                                      };
-
         public static string GameMetadata = "gameMetadata";
         public static string FrameNumber = "frameNumber";
         public static string TitleId = "titleId";
@@ -167,16 +162,12 @@ namespace ReplayFx.Models
         public static string TimeAtSuperSonic = "timeAtSuperSonic";
         public static string TimeAtBoostSpeed = "timeAtBoostSpeed";
         public static string RelativePositioning = "relativePositioning";
-        
-        
         public static string TimeInFrontOfCenterOfMass = "timeInFrontOfCenterOfMass";
         public static string TimeBehindCenterOfMass = "timeBehindCenterOfMass";
         public static string TimeMostForwardPlayer = "timeMostForwardPlayer";
         public static string TimeMostBackPlayer = "timeMostBackPlayer";
         public static string TimeBetweenPlayers = "timeBetweenPlayers";
         public static string PerPossession = "perPossessionStats";
-       
-        
         public static string averageCounts = "averageCounts";
         public static string Pass = "pass";
         public static string Passed = "passed";
@@ -192,8 +183,6 @@ namespace ReplayFx.Models
         public static string AvgHits = "averageHits";
         public static string Count = "count";
         public static string BallCarries = "ballCarries";
-
-
         public static string TotalCarries = "totalCarries";
         public static string LongestCarry = "longestCarry";
         public static string FurthestCarry = "furthestCarry";
@@ -202,16 +191,12 @@ namespace ReplayFx.Models
         public static string FastestCarrySpeed = "fastestCarrySpeed";
         public static string TotalCarryDistance = "totalCarryDistance";
         public static string carryStats = "carryStats";
-        
-        
         public static string AvgZDistance = "averageZDistance";
         public static string AvgXyDistance = "averageXyDistance";
         public static string AvgBallZVelocity = "averageBallZVelocity";
         public static string VarianceXyDistance = "varianceXyDistance";
         public static string VarianceZDistance = "varianceZDistance";
         public static string VarianceBallZVelocity = "varianceBallZVelocity";
-        
-        
         public static string AvgCarrySpeed = "averageCarrySpeed";
         public static string DistanceAlongPath = "distanceAlongPath";
         public static string KickoffStats = "kickoffStats";
@@ -228,8 +213,6 @@ namespace ReplayFx.Models
         public static string PlayerIds = "playerIds";
         public static string TotalSaves = "totalSaves";
         public static string CenterOfMass = "centerOfMass";
-
-
         public static string TimeOnGround = "timeOnGround";
         public static string TimeLowInAir = "timeLowInAir";
         public static string TimeHighInAir = "timeHighInAir";
@@ -292,7 +275,6 @@ namespace ReplayFx.Models
         public static string Parties = "parties";
         public static string LeaderId = "leaderId";
         public static string Members = "members";
-
         public static string Alpha = "Alpha";
         public static string Bravo = "Bravo";
     }
