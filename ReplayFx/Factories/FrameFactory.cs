@@ -5,23 +5,33 @@ using System.Collections.Generic;
 
 namespace ReplayFx.Factories
 {
-    public class FrameFactory : _Factory
+    public class FrameFactory
     {
-        public static List<Frame> Build( JObject frameJsonObj )
+        public static List<Frame> Build(JObject rawJson)
+        {
+            List<Frame> _FinishedData = JBot.CreateList<Frame>();
+            JObject metaJson = JBot.GetObject( _Constants.GameMetadata, rawJson );
+            JObject gamestatJson = JBot.GetObject( _Constants.gameStats, rawJson );
+            _FinishedData = JBot.AddData<Frame>( _FinishedData, BuildFrameList(metaJson) );
+            _FinishedData = JBot.AddData<Frame>( _FinishedData, BuildFrameList(gamestatJson) );
+            return _FinishedData;
+        }
+
+        public static List<Frame> BuildFrameList( JObject frameJsonObj )
         {
             List<Frame> _FinishedData = JBot.CreateList<Frame>();
             List<List<string>> _MetadataFrameSet = JBot.GetFrameHeadProps();
             foreach (List<string> propList in _MetadataFrameSet)
             {
-                foreach (var property in propList)
+                foreach (var jsonProp in propList)
                 {
-                    if( JBot.HasProp(property, frameJsonObj))
+                    if( JBot.HasProp(jsonProp, frameJsonObj) )
                     {
-                        JArray frameJsonList = JBot.GetArray( property, frameJsonObj);
-                        foreach (var frame in frameJsonList)
+                        JArray frameJsonList = JBot.GetArray( jsonProp, frameJsonObj);
+                        foreach (var frameJsonData in frameJsonList)
                         {
-                            Frame _FinishedFrame = CreateFrame();
-                            JObject frameJson = JBot.CreateObject(frame);
+                            JObject frameJson = JBot.CreateObject(frameJsonData);
+                            Frame _FinishedFrame = JBot.CreateNewFrame();
                             _FinishedFrame = BuildFrame(frameJson);
                         }
                     }
@@ -32,11 +42,11 @@ namespace ReplayFx.Factories
 
         private static Frame BuildFrame(JObject frameJson)
         {
-            Frame _FinishedData = CreateFrame();
+            Frame _FinishedData = JBot.CreateNewFrame();
             List<List<string>> _FrameProps = JBot.GetFrameProps();
             foreach (var propList in _FrameProps)
             {
-                _FinishedData = TryAddValue(_FinishedData, propList, frameJson);
+                _FinishedData = BuildFrameData( _FinishedData, propList, frameJson );
             }
             _FinishedData.PlayerId = JBot.GetPlayerId(frameJson);
             _FinishedData.AttackerId = JBot.GetAttackerId(frameJson);
@@ -44,26 +54,20 @@ namespace ReplayFx.Factories
             return _FinishedData;
         }
 
-        private static Frame TryAddValue(Frame modelObj, List<string> propList, JObject frameJson)
+        private static Frame BuildFrameData(Frame modelObj, List<string> propList, JObject frameJson)
         {
-            Frame _FinishedData = CreateFrame();
-            //foreach (var item in _Constants.KickoffHeadProps)
-            //{
-            //    if(JBot.HasProp<JObject>(item , frameJson))
-            //    {
-            //        frameJson
-            //    }
-            //}
+            Frame _FinishedData = JBot.CreateNewFrame();
             foreach (string jsonProp in propList)
             {
-                _FinishedData = JBot.TryAddStat<Frame>(jsonProp, modelObj, frameJson);
+                _FinishedData = JBot.TryAddData<Frame>( jsonProp, modelObj, frameJson );
             }
+            //TODO: Create Build Touch Frame Process
             return _FinishedData;
         }
 
         private static void CheckForTouch()
         {
-
+            //TODO: Create CheckMethod
         }
     }
 }
